@@ -126,7 +126,10 @@
 \floatname{algorithm}{\sjtu@label@algo}
 \renewcommand{\listalgorithmname}{\sjtu@listalgorithmname}
 \renewcommand{\lstlistingname}{\sjtu@value@listingname}
+
 % Title Settings at the chapter Level
+\CTEXsetup[name={,}]{chapter}
+\CTEXsetup[number={\arabic{chapter}}]{chapter}
 \CTEXsetup[nameformat={\Large\bfseries}]{chapter}
 \CTEXsetup[titleformat={\Large\bfseries}]{chapter}
 \CTEXsetup[beforeskip={15\p@}]{chapter}
