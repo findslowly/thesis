@@ -1,0 +1,13 @@
+\chapter{Event Detection}
+In this chapter, we will introduce the mechanism of event detection in this project. First for the audio clips we have downloaded, we need to extract relevant features from them. After getting features, a Gaussian Mixture Model is built on those features. Then for the new testing audio, we would implement a segmentation algorithm to cut the clip into pieces and calculate the score of each models to decide which events those segments are detected.   
+\section{Feature Extraction}
+Since the audio data is downloaded from a sound website where clips are crowdsourced, the clips are in various format. We converted all audio clips to WAV format and averaged the channels into one if it has multiple channels. Moreover, clips are all downsampled to 16khz sample rate for feature extraction.\\ 
+For the audio data, mel-frequency cepstrum coefficients (MFCC) features are a widely-used feature. It was brought up by xxx and xxx in the 1980s. 
+
+\section{Gaussian Mixture Model}
+From the previous feature extraction process, we could a matrix representation for an audio clip. The column number is the dimension of the features and one row corresponds to one observation. From these data, we need to build a model that can capture the overall feature distribution and also are conviniet to use for testing data.\\
+For this goal, Gaussian Mixture Model (GMM) is used. 
+
+\section{Audio Segmentation}
+Once the models are built, we are ready to use it to test on a potential event clip. But for the problem of scene recognition, we need to detect the   events happening in a clip, therefore, a audio segmentation technique is employed to segment audio clips. \\ 
+Usually, frame energy is used to segment 
