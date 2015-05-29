@@ -2,12 +2,33 @@
 In this chapter, we will introduce the mechanism of event detection in this project. First for the audio clips we have downloaded, we need to extract relevant features from them. After getting features, a Gaussian Mixture Model is built on those features. Then for the new testing audio, we would implement a segmentation algorithm to cut the clip into pieces and calculate the score of each models to decide which events those segments are detected.   
 \section{Feature Extraction}
 Since the audio data is downloaded from a sound website where clips are crowdsourced, the clips are in various format. We converted all audio clips to WAV format and averaged the channels into one if it has multiple channels. Moreover, clips are all downsampled to 16khz sample rate for feature extraction.\\ 
-For the audio data, mel-frequency cepstrum coefficients (MFCC) features are a widely-used feature. It was brought up by xxx and xxx in the 1980s. 
+For the audio data, mel-frequency cepstrum coefficients (MFCCs) features are a widely-used feature. It was brought up by Davis and Mermelstein in the 1980s. 
+It was experimented that the mel-frequency cepstra possess a significant advantage over the linear-frequency cepstra-specifically, MFCC allow better suppression of insignificant spectral variation in the higher frequency bands \parencite{davis1980comparison}.
 
-\section{Gaussian Mixture Model}
-From the previous feature extraction process, we could a matrix representation for an audio clip. The column number is the dimension of the features and one row corresponds to one observation. From these data, we need to build a model that can capture the overall feature distribution and also are conviniet to use for testing data.\\
-For this goal, Gaussian Mixture Model (GMM) is used. 
+\section{Model Building}
+From the previous feature extraction process, we could a matrix representation for an audio clip. The column number stands for the dimension of the features and each row corresponds to one observation. From these data, we need to build a model that can capture the overall feature distribution and also are convenient to use for testing data.\\
+
+For this goal, Gaussian Mixture Model (GMM) is used. A gaussian mixture model (or density) is a weighted sum of N gaussian densities, given by the equation: 
+(gaussian equation). 
+The intuition of using GMM to model the audio events is that the individual component densities of a multi-model density may model some underlysing set of acoustic classes \parencite{reynolds1995robust}. 
+Like in speech, a words may consist of some vowels and consonants. 
+An audio event is naturally more complicated than speech, and may therefore contain more characteristics. 
+Therefore, we use different gaussian densities with different \mu-vector and \sigma-vector, where the \mu-vector may capture the overall value for one class and the \sigma-vector shows the variation of that class.  
+When these densities are added together, forming a GMM, they can have a good depiction of some unusual distributions. \\ 
+
+We train our GMM models on the training data using Expecation-Maximization(EM) algorithm. 
+This part use the gaussian toolbox provided by Matlab software. 
+In the section of evaluation, we provide a experiment of controlling the number of mixtures and using k-means algorithm to evaluate the performance of our model. 
 
 \section{Audio Segmentation}
 Once the models are built, we are ready to use it to test on a potential event clip. But for the problem of scene recognition, we need to detect the   events happening in a clip, therefore, a audio segmentation technique is employed to segment audio clips. \\ 
-Usually, frame energy is used to segment 
+There are lots of research carried out on the segmentation of audios.
+Some may simply use the average frame energy as the threshold to cut the clips, while other complicated methods involve more features and even use machine learning techniques. 
+In this project, we use a method of setting a threshold combining frame energy and spectral centroids, and this method is described in \parencite{giannakopoulos2009method}.
+This method uses two features from audio:
+\begin{itemize}
+\item{Frame Energy: this features depicts the overall energy level of one frame. Typically frames where there are some events happening have a higher energy than silent frames.}
+\item{Spectral centroid: this represents the "center of gravity" of the audio spectrum. For example, the spectral centroid of the i-th frame (denoted by $$ {C_i}$$) is given by the equation:
+spectral centroid = \frac{\sum\limits_{k=1}^Nk\times Amp(k)}{\sum\limits_{k=1}^NAmp(k)}
+} 
+In this equation, Amp(k) is the amplitude corresponding to bin k in Discrete Fourier Transform (DFT) spectrum. So a higher spectral centroid denotes a higher frequency in this frame. Because noises are often in a low frequency, we could use this feature to filter out them. 
