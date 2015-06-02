@@ -1,0 +1,28 @@
+\chapter{Evaluation}
+In this chapter, evaluation is carried out on event detection and also on the scene recognition stage. 
+
+\section{Event Detection Evaluation}
+Audio events are detected using the previous proposed GMM method, but there are still some parameters or configuration to be tuned for the best performance of our model.
+In this section, two aspects are tuned for evaluating our model: 
+\begin{itemize}
+\item{Component Number}
+\end{itemize}
+
+The evaluation for event detection uses data from IEEE AASP Challenge for event detection \footnote{http://c4dm.eecs.qmul.ac.uk/sceneseventschallenge}.  
+In this challenge, a training dataset are given containing instantiations of individual events for 16 different classes. 
+Moreover, there is also a developement dataset, which consist of 1 minute recordings of every-day audio events in a number of office environments. 
+This developement dataset is annotated by human and can be used for model evaluation. \\ 
+
+The evaluation begins by first segmenting clips using the our segmentation method, and then feed the segments, which we consider as one event to our GMM models. 
+The detected event is chosen when its corresponding GMM has the highest posterior probability. 
+Three types of assessment of the various systems will take place, i.e., a frame-based, event-based, and class-wise event-based evaluation \parencite{giannoulis2013database}.     
+For the frame-based evaluation, suppose r,e and c denotes number of ground truth, estimated and correct events for a given 10ms frame, the Precision, Recall, and F-measure are defined as: 
+\begin{equation}
+	P = \frac{c}{e}, R = \frac{c}{r}, F = \frac{2PR}{P+R}.  
+\end{equation}
+event-based and class-wise event-based evaluation have different ways to calculate the F-measure. 
+In the end, the average F-measure of the aforementioned evaluations are taken as the main metric.
+
+\section{Scene Recognition Evaluation}
+
+\section{Summary}

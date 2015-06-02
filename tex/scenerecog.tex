@@ -1,0 +1,26 @@
+\chapter{Scene Recognition}
+
+\section{Scene-Event Relation Mining}
+
+\section{Audio Segmentation}
+Once the models are built, we are ready to use it to test on a potential event clip. 
+But for the problem of scene recognition, we need to detect the   events happening in a clip, therefore, a audio segmentation technique is employed to segment audio clips. \\ 
+There are lots of research carried out on the segmentation of audios.
+Some may simply use the average frame energy as the threshold to cut the clips, while other complicated methods involve more features and even use machine learning techniques. 
+In this project, we use a method of setting a threshold combining frame energy and spectral centroids, and this method is described in \parencite{giannakopoulos2009method}.
+This method uses two features from audio:
+\begin{itemize}
+\item{Frame Energy: this features depicts the overall energy level of one frame. Typically frames where there are some events happening have a higher energy than silent frames.}
+\item{Spectral centroid: this represents the "center of gravity" of the audio spectrum. For example, the spectral centroid of the i-th frame (denoted by $ C_i$) is given by the equation:
+\[
+C_i = \frac{\sum\limits_{k=1}^Nk\times Amp(k)}{\sum\limits_{k=1}^NAmp(k)}
+\]
+}
+\end{itemize}
+
+In this equation, $Amp(k)$ is the amplitude corresponding to bin k in Discrete Fourier Transform (DFT) spectrum. 
+So a higher spectral centroid denotes a higher frequency in this frame. Because noises are often in a low frequency, we could use this feature to filter out them. 
+
+\section{Bayesian Network for Inference}
+
+\section{Summary}

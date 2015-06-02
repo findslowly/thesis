@@ -61,7 +61,6 @@
 \RequirePackage{subfigure}
 \RequirePackage{ccaption}
 \RequirePackage[backend=biber, style=caspervector,utf8, bibencoding=utf8, sorting=none]{biblatex}
-%\RequirePackage[sort&compress,numbers]{natbib}
 \RequirePackage{xcolor}
 \RequirePackage{wasysym}
 \RequirePackage{listings}
@@ -204,9 +203,6 @@
   extendedchars=false,columns=flexible,mathescape=true
   numbersep=-1em
 }
-
-%  参考文献风格 GBT7714-2005
-%\bibliographystyle{bst/GBT7714-2005NLang}
 
 % 定理环境
 \theoremstyle{plain}
@@ -379,14 +375,13 @@
 	%% 正文页眉页脚
 	\fancypagestyle{main}{
 	  \fancyhf{}
-	%  \fancyhead[L]{\nouppercase{\small\kaishu\includegraphics[width=0.22\textwidth]{figure/sjtubannerRed}}}
-	%  %\fancyhead[L]{\includegraphics[width=0.22\textwidth]{figure/sjtubannerRed}}
-	%  \fancyhead[R]{\nouppercase{\small\kaishu\sjtu@value@titlemark}}
-	  \fancyfoot[C]{\small ~{\bfseries\thepage}~}
+	  \fancyhead[L]{\includegraphics[width=0.22\textwidth]{figure/sjtubannerRed}}
+	  \fancyhead[R]{\nouppercase{\small\kaishu\sjtu@value@titlemark}}
+	  \fancyfoot[C]{\small ---~{\bfseries\thepage}~}
 	}
 	%% 开章页页眉页脚
 	\fancypagestyle{plain}{% 设置开章页页眉页脚风格(只有页码作为页脚)
-	  \fancyhf{}
+	  \fancyhf{}%
 	  \fancyhead[L]{\nouppercase{\small\kaishu\includegraphics[width=0.22\textwidth]{figure/sjtubannerRed}}}
 	  \fancyhead[R]{\nouppercase{\small\kaishu\sjtu@value@titlemark}}
 	  \fancyfoot[C]{\small ~{\bf\thepage}~}

@@ -2,7 +2,6 @@
 %% thesis.tex
 %%==================================================
 
-% 双面打印
 \documentclass[bachelor, adobefonts, openany, cs4size]{sjtuthesis}
 % \documentclass[bachelor, adobefonts, openany, cs4size]{sjtuthesis}
 % \documentclass[master, adobefonts, review]{sjtuthesis}
@@ -18,6 +17,12 @@
 \addbibresource{bib/thesis.bib}
 % \addbibresource{bib/chap2.bib}
 
+% define the reference name 
+\DefineBibliographyStrings{english}{%
+	bibliography = {REFERENCES}, 
+}
+
+
 \begin{document}
 
 %% 无编号内容：中英文论文封面、授权页
@@ -31,6 +36,7 @@
 \makeDeclareAuthorization
 
 \frontmatter 	% 使用罗马数字对前言编号
+\pagestyle{plain}
 
 %% 摘要
 \include{tex/abstract}
@@ -46,12 +52,12 @@
 \mainmatter	% 使用阿拉伯数字对正文编号
 
 %% 正文内容
-\include{tex/chapter01}
-\include{tex/chapter02}
-\include{tex/chapter03}
-\include{tex/chapter04}
-\include{tex/chapter05}
-\include{tex/chapter06}
+\include{tex/intro}
+\include{tex/dataprep}
+\include{tex/eventdetect}
+\include{tex/scenerecog}
+\include{tex/evaluation}
+\include{tex/related}
 
 \appendix	% 使用英文字母对附录编号，重新定义附录中的公式、图图表编号样式
 \renewcommand\theequation{\Alph{chapter}--\arabic{equation}}	
@@ -61,6 +67,7 @@
 \backmatter	% 文后无编号部分
 
 %% 参考资料
+%\bibliography{bib/thesis}
 \printbibliography[heading=bibintoc]
 
 %% 致谢、发表论文、申请专利、参与项目、简历
