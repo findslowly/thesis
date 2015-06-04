@@ -72,7 +72,8 @@
 \RequirePackage{pdfpages}
 \RequirePackage{calc}
 \RequirePackage{algorithm, algorithmic}
-
+% add by findslowly
+\RequirePackage[tableposition=top]{caption}
 %==========
 % Segment 2. Define general-purpose LaTeX commands.
 %==========
@@ -158,9 +159,11 @@
 \DeclareGraphicsExtensions{.pdf,.eps,.png,.jpg,.jpeg}
 
 % Caption setting in ccaption pacakge
-\captiondelim{\ }
-\captionnamefont{\kaishu\small}
-\captiontitlefont{\kaishu\small}
+%\captiondelim{\ }
+%\captionnamefont{\kaishu\small}
+%\captiontitlefont{\kaishu\small}
+\captionsetup[table]{name=Table}
+\captionsetup{labelsep=space}
 
 % Floating parameters
 \renewcommand{\textfraction}{0.15}

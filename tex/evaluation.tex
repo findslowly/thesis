@@ -38,22 +38,34 @@ In the submitted papers, contestents also carried out the same evaluation on the
 \subsection{Evaluation Result}
 The following picture is the result of average F-measure with regard to different component numbers in GMM. 
 % component.eps
+\begin{figure}[htb]
+\centering
+\includegraphics[scale=0.85]{figure/evaluation/component}
+\label{fig:component}
+\end{figure}
+
 As we can see in this picture, the F-measure gradually rise when component number are increasing. 
-But after component number reaching 18 or so, the F-measure quitely stays the same. \\ 
+But after component number reaching 18 or so, the F-measure roughly stays the same. \\ 
 
 % running time eps 
-\begin{table}[h]
+\begin{table}[htb]
+\centering
+\caption{Event Detetion Evaluation}
 \begin{tabular}{lllll}
+\hline
          & EB    & CWEB  & FB    & Average \\
+\hline
 baseline & 15.4  & 13.5  & 20.6  & 16.50   \\
 NR2      & 11.06 & 20.9  & 32.49 & 21.48   \\
 NVM      & 47.53 & 41.28 & 54.41 & 47.74   \\
 Our      & 53.44 & 40.07 & 52.41 & 48.64   \\
 VVK      & 51.13 & 39.77 & 56.28 & 49.06   \\
 GVV      & 46.8  & 36.7  & 65.2  & 49.57   \\
-DHV      & 51.05 & 38.05 & 61.6  &        
+DHV      & 51.05 & 38.05 & 61.6  & 50.23   \\     
+\hline
 \end{tabular}
 \end{table}
+
 Moreover, figure X-X is the running time of our system with regard to the number of components. 
 There is basically a linear relationship between the number of components and the total running time. 
 Hence, we choose to use 18 as the component number for our system, since this component number has a good F-measure, and the speed for training models are also fast.\\ 
