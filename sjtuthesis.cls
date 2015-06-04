@@ -60,8 +60,8 @@
 \RequirePackage{graphicx}
 \RequirePackage{subfigure}
 \RequirePackage{ccaption}
-\RequirePackage[backend=biber, style=caspervector,utf8, bibencoding=utf8, sorting=none]{biblatex}
-%\RequirePackage[sort&compress,numbers]{natbib}
+%\RequirePackage[backend=biber, style=caspervector,utf8, bibencoding=utf8, sorting=none]{biblatex}
+\RequirePackage[sort&compress,numbers]{natbib}
 \RequirePackage{xcolor}
 \RequirePackage{wasysym}
 \RequirePackage{listings}
@@ -206,7 +206,7 @@
 }
 
 %  参考文献风格 GBT7714-2005
-%\bibliographystyle{bst/GBT7714-2005NLang}
+\bibliographystyle{bst/GBT7714-2005N}
 
 % 定理环境
 \theoremstyle{plain}

@@ -6,6 +6,30 @@ First for the audio clips we have downloaded, we need to extract relevant featur
 After getting features, a Gaussian Mixture Model is built on those features. 
 Then for the new testing audio, we would implement a segmentation algorithm to cut the clip into pieces and calculate the score of each models to decide which events those segments are detected.   
 
+\section{Audio Enhancement}
+Because the audios downloaded from SSEs are uploaded by other users. 
+Those clips may be recorded using professional recorder device, but more often, are recorded using the convenient cellphones. 
+Hence we need to apply a noise reduction step to enhance the audio clips. \\ 
+
+Among algorithms for speech enhancement, spectral subtraction was one of the first algorithms proposed. 
+Although it was originally proposed for speech enhancement, we use it in our project for noise is pretty much the same in speech or in more general audios. 
+The basic principles is that we assume the clean signal add some additive noise becomes the audio we get. 
+Then if we subtract the noise spectrum from the audio, we may get signal close to the original clean one. \\  
+
+Mathematically speaking, assume the input signal is $ y(t) = x(t) + n(t)$, where the signal $x(t)$ is the signal of interest and $n(t)$ is the additive noise. 
+The audio enhancement process takes on the following steps:
+\begin{enumerate}
+\item The input signal $y(t)$ is resampled to 16kHz and multiple channels are averaged to one channel. 
+\item Using short time Fourier transform (STFT), we obtain $Y_i(k) = X_i(k) + N_i(k)$, where $i$ is the frame indices and $k$ is the frequency bin indices of the spectrum. 
+\item The Minimum Statistics (MS) estimator \cite{martin2001noise} is used to the noise power spectral density from $y(t)$. 
+\item Spectral subtraction is used to remove the estimated noice spectrum from the input spectrum $Y_i(k)$. 
+Then we could get an estimated clean signal spectrum: $\hat{X_i}(k)$. 
+\item Applying inverse short time Fourier transform (ISTFT) on $\hat{X_i}(k)$ to get the estimated clean signal $\hat{x}(t)$. 
+\end{enumerate}
+
+A speech processing toolbox for Matlab called VoiceBox is used for spectral subtraction\footnote{http://www.ee.ic.ac.uk/hp/staff/dmb/voicebox/voicebox.html}.
+% example here 
+
 
 \section{Feature Extraction}
 Since the audio data is downloaded from a sound website where clips are crowdsourced, the clips are in various format. 
@@ -29,7 +53,7 @@ A popular formula to convert $f$ herts into $m$ mel is: \\
 % melscale.eps on 5566
 
 % Paraphrase !!!
-Due to the transformation form frequency to mel scale, MFCC focuses on the more important range of lower frequency bands, while suppressing the higher part \parencite{davis1980comparison}.
+Due to the transformation form frequency to mel scale, MFCC focuses on the more important range of lower frequency bands, while suppressing the higher part \cite{davis1980comparison}.
 
 \section{Model Selection}
 From the previous feature extraction process, we could a matrix representation for an audio clip. 
@@ -56,14 +80,15 @@ P(\mathbf{x}|\mathbf{\pi},\mathbf{\mu},\Sigma) = \sum_{k = 1}^{M} \pi_k
 \mathcal{N}(\mathbf{x}|\mathbf{\mu}_k, \Sigma_k),
 \end{equation} 
 
-The intuition of using GMM to model the audio events is that the individual component densities of a multi-model density may model some underlysing set of acoustic classes \parencite{reynolds1995robust}. 
+The intuition of using GMM to model the audio events is that the individual component densities of a multi-model density may model some underlysing set of acoustic classes \cite{reynolds1995robust}. 
 Like in speech, a words may consist of some vowels and consonants. 
 An audio event is naturally more complicated than speech, and may therefore contain more characteristics. 
-Therefore, we use different gaussian densities with different $\mathbf{\mu}$ (vector) and $\mathbf\sigma$ (vector), where the $\mathbf\mu$ (vector) may capture the overall value for one class and the $\mathbf\sigma$ vector shows the variation of that class.  
+Therefore, we use different gaussian densities with different $\mathbf{\mu}$ and $\mathbf\sigma$, where the $\mathbf\mu$ may capture the overall value for one class and the $\mathbf\sigma$ shows the variation of that class.  
 When these densities are added together, forming a GMM, they can have a good depiction of some unusual distributions. \\ 
 
 We train our GMM models on the training data using Expecation-Maximization(EM) algorithm. 
 This part use the gaussian toolbox provided by Matlab software. 
+
 
 \section{Summary}
 
