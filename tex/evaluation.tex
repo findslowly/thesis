@@ -36,18 +36,31 @@ In system comparison, we use other models from the aforementioned IEEE AASP Chal
 In the submitted papers, contestents also carried out the same evaluation on the developement dataset, so the comparison are done on the same dataset.  
 
 \subsection{Evaluation Result}
-The following picture is the result of average F-measure with regard to different component numbers in GMM. 
+\subsubsection{Component Number Evaluation}
+Figure \ref{fig:component} is the result of average F-measure with regard to different component numbers in GMM. 
 % component.eps
 \begin{figure}[htb]
 \centering
-\includegraphics[scale=0.85]{figure/evaluation/component}
+\input{figure/evaluation/component}
+\caption{}
 \label{fig:component}
 \end{figure}
 
-As we can see in this picture, the F-measure gradually rise when component number are increasing. 
+As we can see in Figure \ref{fig:component}, the F-measure gradually rise when component number are increasing. 
 But after component number reaching 18 or so, the F-measure roughly stays the same. \\ 
 
 % running time eps 
+\begin{figure}[htb]
+\centering
+\input{figure/evaluation/componentTime}
+\caption{}
+\label{fig:componentTime}
+\end{figure}
+Moreover, Figure \ref{fig:componentTime} is the running time of our system with regard to the number of components. 
+There is basically a linear relationship between the number of components and the total running time. 
+Hence, we choose to use 18 as the component number for our system, since this component number has a good F-measure, and the speed for training models are also fast.\\ 
+
+\subsubsection{Event Detection F-measure Evaluation}
 \begin{table}[htb]
 \centering
 \caption{Event Detetion Evaluation}
@@ -65,10 +78,6 @@ DHV      & 51.05 & 38.05 & 61.6  & 50.23   \\
 \hline
 \end{tabular}
 \end{table}
-
-Moreover, figure X-X is the running time of our system with regard to the number of components. 
-There is basically a linear relationship between the number of components and the total running time. 
-Hence, we choose to use 18 as the component number for our system, since this component number has a good F-measure, and the speed for training models are also fast.\\ 
 
 
 

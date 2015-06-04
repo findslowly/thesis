@@ -128,6 +128,7 @@
 \floatname{algorithm}{\sjtu@label@algo}
 \renewcommand{\listalgorithmname}{\sjtu@listalgorithmname}
 \renewcommand{\lstlistingname}{\sjtu@value@listingname}
+\renewcommand{\figurename}{Figure}
 
 % Title Settings at the chapter Level
 \CTEXsetup[name={,}]{chapter}
