@@ -1,10 +1,48 @@
 \chapter{Scene Recognition}
+In this chapter, we discuss the process of how a scene is recognized by detected events in the clip. 
+This chapter includes the issue mining scene-event relations from downloaded script data.
+Then a segmenter algorithm is used to segment audio data for event detection. 
+In the last, the detected event sequence is used for scene recognition. 
 
 \section{Scene-Event Relation Mining}
+\subsection{Scene Identification}
+As mentioned before, well-written scripts provide a clear-defined boundary for scene switch. 
+There are words words like "Cut to:", "Scene:", "INT", "EXT" to denote this kind of switching, and they are called "scene identifier".  
+Following scene identifier, there usually is a short sentence or some words describing the scene the following paragraph is in. 
+We call the sentence formed by scene identifier and some scene-related phrase as "scene-switching sentence"
+We use the word "context" to represent the paragraphs between scene-switching sentence. \\ 
+
+% a graph here to show a real example 
+
+After describing the terminology we used for scripts, we need to extract the scene representing a context from the "scene-switching sentence". 
+
+% scene-matching algorithm 
+
+\subsection{Event TF-IDF Calculation}
+In order to calculate how important a audible event is in identifing a scene, we need a metric for calculating event distinctiveness. 
+It is not enough if we only use the event happening frequency as a single metric for this distinctiveness. 
+Because if events are ranked this way, common events which happen frequently in many scenes would rank high and bring no effect for recognizing different scenes. 
+To tackle this issue, Term Frequency-Inverse Document Frequency (TF-IDF) statistic is used for calculating event distinctiveness. \\ 
+
+The original TF-IDF statistic is used to reflect how important a word is to a document in a corpus. 
+We use the idea of TF-IDF statistic, but applied to our special case. 
+In our case, the corpus refers to the all the context files, each contains one scene. 
+Document is therefore one scene, and is comprised of all the context files that have been attributed to that scene. 
+Word here means an audible event. 
+Suppose $e$ and $s$ represent a event and a scene, respectively. 
+$f(e,s)$ denotes the number of context that e has appeared in it among all the contexts that belong to scene $s$.  
+$C$ denotes the number of all contexts regardless of scenes. 
+Hence TF and IDF are calculated as: 
+\begin{equation}
+\begin{split}
+ TF &= 1 + \log{f(e,s)} \\ 
+ IDF &= 1 + \log{\frac{C}{f(e,s)}}
+\end{split}
+\end{equation} 
 
 \section{Audio Segmentation}
 Once the models are built, we are ready to use it to test on a potential event clip. 
-But for the problem of scene recognition, we need to detect the   events happening in a clip, therefore, a audio segmentation technique is employed to segment audio clips. \\ 
+But for the problem of scene recognition, we need to detect the events happening in a clip, therefore, a audio segmentation technique is employed to segment audio clips. \\ 
 
 There are lots of research carried out on the segmentation of audios.
 Some may simply use the average frame energy as the threshold to cut the clips, while other complicated methods involve more features and even use machine learning techniques. 
@@ -22,6 +60,6 @@ C_i = \frac{\sum\limits_{k=1}^Nk\times Amp(k)}{\sum\limits_{k=1}^NAmp(k)}
 In this equation, $Amp(k)$ is the amplitude corresponding to bin $k$ in Discrete Fourier Transform (DFT) spectrum. 
 So a higher spectral centroid denotes a higher frequency in this frame. Because noises are often in a low frequency, we could use this feature to filter them out. 
 
-\section{Bayesian Network for Inference}
+\section{Scene Inference}
 
 \section{Summary}

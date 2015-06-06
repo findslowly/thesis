@@ -27,13 +27,42 @@ Finally, Signal and Instrument are put under Other Sound.
 They include common signals and musical instrument in life. 
 
 \section{Audio Data}
-The audio data for the events we chosed is downloaded from SSE. 
+The audio clips for the events in the eventlist we created are downloaded from SSE. 
 There are many available SSEs for crawling sound clips, e.g., SoundJax\footnote{http://soundjax.com}, FindSounds\footnote{http://findsounds.com}, and Freesound\footnote{http://freesound.org}. 
 We use all these SSEs to query the audio events and then download their corresponding clips. 
 However, this downloading process is carried out with some filtering technique. 
 Because the events we are considering suitable are "primitive" constituents for large audio context, their information should be covered in a comparative short time. 
 So we set up a duration threshold for candidate audio clips, i.e., only downloading clips from 0.5 to 10 seconds.  
 
-Finally, we have downloaded !!! clips for !!! events. On average, !!! 
+\section{Scene Context Data}
+In some previous project, researchs are labelling the audible events happening in some scenes. 
+This method is not only laborious, but also has a limitation for expanding to other scenes.
+In this thesis, we are using a automatical way of extracting the relation between audible events and scenes.
+The data we use are well-written scripts, including movies, plays, TV series, etc. 
+The reason we use these scripts is because they all have a clear boundary of one "scene". 
+In well-written scripts, whenever the plot switches to a new place, there is a sentence in the top to indicate what the current scene is. 
+% script example
+\begin{figure}[htb]
+\centering
+\includegraphics[scale=0.6]{figure/dataprep/script}
+\caption{A Example of Script}
+\label{fig:script}
+\end{figure}
+
+Figure \ref{fig:script} gives an example of what a script snippet may looks like. Usually on the top of it, there is a single sentence that specifies the location, time information for the paragraphs below it, which we would like to call as "scene-switching sentence". 
+For example, in the example script, "INT. JIMMY's BEDROOM - NIGHT" is the scene-switching sentence. 
+"INT" denotes this scene happens in a indoor environment. 
+sometimes, "EXT" is used to denote ourdoor environment. 
+In the middle of this sentence, some word phrase or sentence may be used to represent the context or scene. 
+In this case, we may say this is a bedroom scene. 
+Lastly, "NIGHT" or "DAY" is ued to refer the time when filmakers are shooting this script. 
+When we are mining the relation between audible events and scenes, the scene-switching sentence needs to be further processed. 
+
+Currently, there are some websites that host a collection of scripts. 
+The website we used include: Simply Scripts\footnote{http://www.simplyscripts.com}, The Daily Script\footnote{http://www.dailyscript.com}, The Screenplay Database\footnote{http://www.screenplaydb.com/film/all/}, The Internet Movie Script Database(IMSDB)\footnote{http://www.imsdb.com/}, etc. 
+
+Since the scripts are downloaded from various sites and are in different formats, we first transform the downloaded pdf or html into txt format. 
+To avoid the issue of downloading the same file from different websites, the file name is checked to discard adundant scripts which have the same name with existing scripts. 
+After cleaning, there are 5611 scripts in total. 
 
 \section{Summary}
