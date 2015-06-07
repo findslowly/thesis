@@ -91,4 +91,11 @@ This part use the gaussian toolbox provided by Matlab software.
 
 
 \section{Summary}
-
+The method we propose for audible event detection are introduced in this chapter. 
+We first apply a noise reduction technique on the downloaded audio clips. 
+This audio enhancement process uses Minimum Statistics estimator to estimate the noise power spectral density. 
+Then the estimated noise are subtracted from the input signal to get a cleaned signal for our training. 
+The features we use in this task is MFCC features. 
+They are notable for good capture of audio features. 
+From the extracted MFCC features, we build Gaussian Mixture Models for features of each event. 
+GMM has the capability to model some complex distribution by its components and this helps us for modelling audible events.  

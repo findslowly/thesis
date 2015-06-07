@@ -5,20 +5,8 @@ Then a segmenter algorithm is used to segment audio data for event detection.
 In the last, the detected event sequence is used for scene recognition. 
 
 \section{Scene-Event Relation Mining}
-\subsection{Scene Identification}
-As mentioned before, well-written scripts provide a clear-defined boundary for scene switch. 
-There are words words like "Cut to:", "Scene:", "INT", "EXT" to denote this kind of switching, and they are called "scene identifier".  
-Following scene identifier, there usually is a short sentence or some words describing the scene the following paragraph is in. 
-We call the sentence formed by scene identifier and some scene-related phrase as "scene-switching sentence"
-We use the word "context" to represent the paragraphs between scene-switching sentence. \\ 
 
-% a graph here to show a real example 
-
-After describing the terminology we used for scripts, we need to extract the scene representing a context from the "scene-switching sentence". 
-
-% scene-matching algorithm 
-
-\subsection{Event TF-IDF Calculation}
+%\subsection{Event TF-IDF Calculation}
 In order to calculate how important a audible event is in identifing a scene, we need a metric for calculating event distinctiveness. 
 It is not enough if we only use the event happening frequency as a single metric for this distinctiveness. 
 Because if events are ranked this way, common events which happen frequently in many scenes would rank high and bring no effect for recognizing different scenes. 
@@ -61,5 +49,14 @@ In this equation, $Amp(k)$ is the amplitude corresponding to bin $k$ in Discrete
 So a higher spectral centroid denotes a higher frequency in this frame. Because noises are often in a low frequency, we could use this feature to filter them out. 
 
 \section{Scene Inference}
+Once a event sequence is detected, we use that sequence of events to infer the scene we think it's the most likely one. 
+After event detection on a segment of testing audio clip, we could get posterior scores for different event models. 
+We use the posteriors as the likelyhood for events. The highest ranked event may be the most likely one. \\ 
+
+Sometimes, one segment may contain multiple events overlapping together. 
+So in this case, only using the top 1 detected events is not enough. 
+So we use the top 3 detected events for each segment, and their posteriors are used as weight. 
+After multipling with the TF-IDF scores of each event to each scene, we could get a score for every scene. 
+Then the highest scored scene are choosen as the recognized scene. 
 
 \section{Summary}

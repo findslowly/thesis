@@ -5,12 +5,31 @@
 \chapter{Introduction}
 
 \section{Motivation and Problem Description}
-Audio data often contains many information that can be captured. For example, in an audio recorded under the context of office, we may here "computer keyboard typing" and "phone ringing", sometimes with "people talking" as the background sound. The detection of these information is important for audio tagging, or audio context inference. With the spread of mobile devices, we have a convinient access to audio streams. So an automatical technique for analyzing these data is useful for extracting information in audio and improving functionality in mobile devices. \\ 
-In this thesis, we refer to the overall atmosphere or context of an audio clips as "scene". It is usually characterised by the name of a place, e.g., street, office, restaurant, stadium, etc. 
+% motivation
+With the spread of mobile devices, our life are crowded with many multimedia resources. 
+Today, hundreds of millions pictures are being take, videos are uploaded, and a large amount of audio clips are also being recorded. 
+Among these multimedia resources, audio data often contains many useful information around the device. 
+For example, in an audio recorded under the context of office, we may hear "computer keyboard typing" and "phone ringing", sometimes with "people talking" as the background sound. 
+After hearing these sound features, we human could easily deduce that the clips we heard are recorded in an office-like context. 
+But this scene recognition process could be further speed up or applied to large quantity audios by a automatically scene recognition system.  
 
+The automatical recognition for audio scenes are important for audio content analysis. 
+For example, in the modern life, people tend to carry their mobile phones everywhere with them. 
+It would be more convinient if the mobile devices could automatically adjust their volume and other profile settings according to the surrounding environment. 
+This may prevent the trouble of unexpected loud noise by mobile devices in an quiet scene, or could save us from missing important notifications when we are surrounded bynoisy atmosphere.  
+Moreover, this technique not only could be applied in ordinary conditions, but also in some security issues. 
+In the surveillance process, police may receive hundreds of thousands videos and audio clips. 
+The automatic scene recognition technique may help to them fast analyze those audios and pindown the scenes they want to further analyze. 
+
+In this thesis, we propose a method for  
 \section{Our Approach}
 So in this thesis, we proposed a system of automatically detect the events in an audio clip and then infer the scene or context from the detected audio events. 
 
 \section{Thesis Organization}
-The thesis is organizaed as follows: 
+The thesis is organizaed as follows: Chapter 2 gives a description about related works, in the area of audible events taxonomy, audio event detection and audio scene recognition. 
+Chapter 3 reviews the data we used in this thesis, including event list and scene list. 
+Then in chapter 4 we describes how event detection is carried out. 
+Chapter 5 present the method we used to extract scene-event relations and scene recognition process. 
+Evaluations of event detection and scene recognition are presented in chapter 6. 
+Finally, chapter 7 gives a conclusion.   
 
