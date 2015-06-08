@@ -40,7 +40,7 @@ Hence TF and IDF are calculated as:
 
 After these two values are calculated, the TF-IDF value are therefore get by multiplying them together. 
 \begin{equation}
- TF-IDF = TF \mult IDF 
+ \text{TF-IDF} = TF \times IDF 
 \end{equation}
 
 \section{Audio Segmentation}
@@ -76,8 +76,22 @@ The final segmentation is conducted
 
 \section{Scene Inference}
 Once a event sequence is detected, we use that sequence of events to infer the scene we think it's the most likely one. 
-After event detection on a segment of testing audio clip, we could get posterior scores for different event models. 
-We use the posteriors as the likelyhood for events. The highest ranked event may be the most likely one. \\ 
+Suppose $S$ denotes a scene, $E_i$ represents the $i$-th detected event, and $i$ ranges from $1$ to $n$. 
+Hence the problem of finding the most likely scene for a detected event sequency could be mathematically shown as: 
+\begin{equation}
+S^* = \operatorname*{arg\,max}_{S} P(S|E_1,E_2,...,E_n)
+\end{equation} 
+
+$S^*$ here we get would be the most likely scene from the observation of $E_i, i = 1,...n$.  
+Yet, in order to calculate this posterior probability, we assume events are independent. 
+This assumption may seems strict because some events are more likely to occur together in one scene. 
+For example, in concert, we may hear \textit{applause} follows some \textit{piano} performance. 
+But we think treating audible events independently could get reasonable result if the events are correctly detected by itself. 
+So currently we sticks to the independence assumption. 
+Under this assumption, we can rewrite the posterior probability as: 
+\begin{equation}
+P(S|E_1,E_2,...,E_n) = P(S|E_1) \times P(S|E_2) \times ... \times P(S|E_n)
+\end{equation}
 
 Sometimes, one segment may contain multiple events overlapping together. 
 So in this case, only using the top 1 detected events is not enough. 

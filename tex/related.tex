@@ -2,30 +2,60 @@
 \section{Audible Events Taxonomy}
 Audible events are a concept hard to define, especially for the detailed sound sources. 
 Researchers have long been researching the area of the automatic classification of environmental sound. 
-But the research toward an audible event taxonomy is little. 
-An early taxonomy for environment sounds was proposed by Schafer \cite{schafer1993soundscape}, which divides sounds into six broad categories: natural, human, society, mechanical, silence and indicators. 
+But the researches toward an audible event taxonomy differs a lot from each other. 
+
+An early taxonomy for environment sounds was proposed by Schafer \cite{schafer1993soundscape}. which divides sounds into six broad categories: natural, human, society, mechanical, silence and indicators. 
+Gaver \cite{gaver1993world} take an ecological approach to everyday listening. 
+He defined basic level events by the simple interactions from a physical perspective. 
+For example, he first distinguish everyday sound-producing events by their broad classes of materials. 
+The three material classes he used is virating objects, aerodynamics sounds, and liquid sounds. 
+Gaver then divided these objects by the iteractions that can cause them to sound, like impacts, scraping, explosion, splashing, etc. 
+We think that although Gaver's research are very detail in the construction of events from iteractions of materials, but it is not suitable for detecting general events in our case. 
+Since we are doing event detection for scene recognition, the events need to general to accomdate unknown scenes. 
+ 
+% need clarify
 Brown \cite{brown2011towards} proposed a more detailed taxonomy by dividing the large acoustic environment into indoor and outdoor environment, and the outdoor environment is further separated into urban, rural, wilderness and underwater environment. 
 In his paper, he gives some sound event in urban context.
-Salamon \cite{salamon2014dataset} focuses on the urban sound taxonomy, and proposed a detailed sound event under the context of urban environment. 
-In his method, he proposed four groups of human, nature, mechanical, and music \footnote{\url{https://serv.cusp.nyu.edu/projects/urbansounddataset/taxonomy.html}}. \\ 
+
+Salamon \cite{salamon2014dataset} focuses on the urban sound taxonomy, and proposed a detailed sound event taxonomy under the context of urban environment\footnote{\url{https://serv.cusp.nyu.edu/projects/urbansounddataset/taxonomy.html}}. 
+In his method, he tries to construct in the following three requirements. 
+First, the taxonomy should be easily combined with previous research.
+Second, it need to be as detailed as possible. 
+The taxonomy should go down to the low-level audible events, instead of staying on some broad sound classes. 
+Third, he focuses on the sound relevant to urban environment, such as those sound sources that contribute to noise pollution. 
+Under these requirements, he proposed a urban sound taxonomy\footnote{\url{https://serv.cusp.nyu.edu/projects/urbansounddataset/urban\_sound\_taxonomy\_v05.pdf}} containing 54 basic sound events. 
+The requirement and taxonomy proposed in Salamon's paper is really helpful for our process of building a taxonomy. 
+We more or less take the taxonomy he created into account, especially the categorization in broad-level sounds. 
 
 \section{Audio Event Detection}
-There are some research done on the definition of audio sound context and on the taxonomy of some audible events. 
-But the previous work on this part has a limit of extending to multiple scenes. 
-Automatic recognition of audio context and event has known also from many earlier works. 
-However, most of the previous work on recognizing scenes focuses on the task of classification under the infomation of scene audio clips, instead of the underlying audible events. 
-There has also few research done on modeling the events for inferring audio context, but they require a manual label of training data, which costs much time and may not be easily extended to other events. \\ 
+There are some early research on the event classification in everyday life, which focuses on some predefined sounds. 
+For example, Fagerlund \cite{fagerlund2007bird} used SVM to classify bird species. 
+Mel-cepstrum parameters and a set of low-level signal parameters are used for their features. 
+Another research has been done on battlefield ground vehicles \cite{wu2007classification}, and they proposed fuzzy logic rule-based classifiers (FLRBC) as their architecture.
 
-
-One of the approaches to consider audio events in scene recognition is introduced by Cai  \cite{cai2006flexible}. 
-They proposed a flexible framework to recognize 5 audio context using 10 predifined events. 
-The main models they used are HMM, Grammar Network, and Bayesian Network. 
-Another event-based audio context recognition is proposed by Heittola \cite{heittola2010audio}. 
-They build histograms for each scene with a set of predifined audio events, and calcuate the cosine distance of the histograms with a new histogram of detected events.\\
-
+In addition to these research, some studies have been carried out on a low number of sound categories in one or two audio context. 
+Chen \cite{chen2005bathroom} propose a system for automated bathroom activity monitoring. 
+They mainly use MFCC features in HMM, and claimed for an accuracy rate for most sound categories above $84\%$. 
+Another research on kitchen environment has been done by Kraft \cite{kraft2005temporal}. 
+They proposed a feature extraction method using a temporal extension of Independent Component Analysis (ICA). 
+But acoustic events in their research are confined in kitchen, like water boiling, sizzle sound, alarms, etc. 
+Many of the previously mentioned methods are performing classification in a small size event lists, thus not applicable for automatic event detection in many other environments. 
+ 
+An event detection challenge has been held in 2013. 
+The event detection is a part of the challenge, which include scene detection and event detection.  
+It is called IEEE AASP Challenge\footnote{\url{http://c4dm.eecs.qmul.ac.uk/sceneseventschallenge}}. 
+The goal of the event detection task was to detect 16 different events in the office environment. 
+The organizer has indeed two tasks regarding to the event detection: one for monophonic event detection, and another for polyphonic event detection.  
+The main metrics they used are the acoustic event error rate (AEER) \cite{giannoulis2013detection} and the F-measure.
+The highest performing system submitted to their evaluation has a frame-based accuracy of $61.52\%$. 
+In this high-performing system, Schr\"{o}der \cite{schroder2013acoustic} proposed a HMM model on features extracted from Gabor filterbank combined with noise suppresion technique. 
 
 \section{Audio Scene Detection}
-In the area of audio scene recognition, Gaunard \cite{gaunard1998automatic} proposed an HMM-based environmental noise recognition system. 
+In the area of audio scene recognition, most of the proposed scene recognition systems are directly modeling global acoustic features of the audio scene. 
+Ma \cite{ma2006acoustic} proposed a HMM-based acoustic context classifier. 
+They build this model by incorporating an adaptive learning mechanism and a hierarchical classification model.  
+
+Gaunard \cite{gaunard1998automatic} proposed an HMM-based environmental noise recognition system. 
 It uses discrete HMM as the model and linear prediction cepstral coefficients (LPCCs) as features. 
 The system can outperforms human subjects for classifying 5 types of environmental noise, namely car, truck, moped, aircraft, and train. 
 Peltonen \cite{peltonen2001computational} studied the efficiency of different acoustic features, models and the effect of test sequency length. 
@@ -34,9 +64,13 @@ Eronen  \cite{eronen2006audio-based} investigated the feasibility of an audio-ba
 Chu \cite{chu2009environmental} performed an empirical feature analysis and use the Matching Pursuit (MP) algorithm to obtain effective features from a large feature set, including MFCC, LPCC, band energy ratio, zero-crossing, energy, etc. 
 Weninger \cite{weninger2011audio} focused on animal vocalizations. They compared left-to-right HMM, cyclic HMM, recurrent neural networks, and SVM. \\
 
-Giannoulis \cite{giannoulis2013applications} described the IEEE AASP challenge \footnote{http://c4dm.eecs.qmul.ac.uk/sceneseventschallenge} on acoustic scene classification and sound events detection.  
-In the event detection part, Schr\"{o}der \cite{schroder2013acoustic} proposed a HMM model on features extracted from Gabor filterbank. 
-Their model achieved the highest performance during the office test.   
+Giannoulis \cite{giannoulis2013applications} described the on acoustic scene classification and sound events detection.  
 In the scene classification part, there are 10 different scenes to classify. 
 Roma \cite{romarecurrence} use Recurrence Quantificaton Analysis (RQA) and MFCC features outperforming other systems when using a standard SVM classifer. 
+
+One of the approaches to consider audio events in scene recognition is introduced by Cai  \cite{cai2006flexible}. 
+They proposed a flexible framework to recognize 5 audio context using 10 predifined events. 
+The main models they used are HMM, Grammar Network, and Bayesian Network. 
+Another event-based audio context recognition is proposed by Heittola \cite{heittola2010audio}. 
+They build histograms for each scene with a set of predifined audio events, and calcuate the cosine distance of the histograms with a new histogram of detected events.\\
 

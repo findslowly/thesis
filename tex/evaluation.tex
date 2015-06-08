@@ -42,7 +42,7 @@ Figure \ref{fig:component} is the result of average F-measure with regard to dif
 \begin{figure}[htb]
 \centering
 \input{figure/evaluation/component}
-\caption{}
+\caption{F-measure for different component number}
 \label{fig:component}
 \end{figure}
 
@@ -53,7 +53,7 @@ But after component number reaching 18 or so, the F-measure roughly stays the sa
 \begin{figure}[htb]
 \centering
 \input{figure/evaluation/componentTime}
-\caption{}
+\caption{Running time for different componet number}
 \label{fig:componentTime}
 \end{figure}
 Moreover, Figure \ref{fig:componentTime} is the running time of our system with regard to the number of components. 
@@ -99,44 +99,53 @@ The testing clips we used are downloaded mainly from previously mentioned sound 
 \subsection{Baseline systems}
 In this evaluation, we need to compare our systems with other systems. 
 And this requires getting existing audio scene recognition system with source code, since we are going to train on different scenes. 
-Luckily, IEEE AASP Challenge has a scene classification part\footnote{http://c4dm.eecs.qmul.ac.uk/sceneseventschallenge/}, and source code for sume of the submitted systems\footnote{https://code.soundsoftware.ac.uk/projects/dcase2013submissions} are available for downloading. 
+Luckily, IEEE AASP Challenge has a scene classification part\footnote{\url{http://c4dm.eecs.qmul.ac.uk/sceneseventschallenge/}}, and source code for sume of the submitted systems\footnote{\url{https://code.soundsoftware.ac.uk/projects/dcase2013submissions}} are available for downloading. 
 On the website, there are 4 scene classification systems and one baseline scene classifier. 
 Because of some programming issues, we choose 2 classification systems, together with the baseline scene classifier for comparison. 
-Table \ref{tab:systems} shows a summary of the systems used for comparison and our systems. 
+Table \ref{table:systems} shows a summary of the systems used for comparison and our systems. 
 
 \begin{table}[htb]
-\caption{Summary of Systems}
+\caption{Summary of systems}
 \begin{tabular}{ll}
-\hline
+\toprule
  Code & Method \\
-\hline
- GSR & 6669 features, classifed using SVM within 4-second window, then majority voting \\
- RNH & Recurrence Quantification Analysis to MFCC time-series, classified by SVM \\ 
+\bottomrule
  Baseline & MFCCs, classified with a bag-of-frames approach \\ 
+ RNH & Recurrence Quantification Analysis to MFCC time-series, classified by SVM \\ 
+ GSR & 6669 features, classifed using SVM within 4-second window, then majority voting \\
  Our & MFCCs, dynamic segmentation, classified with GMM \\ 
-\hline
+\bottomrule
 \end{tabular}
-\label{tab:systems}
+\label{table:systems}
 \end{table}
 
 \subsection{Evaluation Result}
-Table \ref{tab:ac} show the recognition accuracy for each audio scenes. 
+Table \ref{table:ac} show the recognition accuracy for each audio scenes. 
 
 \begin{table}[htbp]
 \centering
 \resizebox{0.95\textwidth}{!}{
-\begin{tabular}{lcccccccccc}
+\begin{tabular}{lccccccccccc}
 \toprule
-     & bathroom & beach & concert & forest & kitchen & office & park & restaurant & street & subway station \\
+     & bathroom & beach & concert & forest & kitchen & office & park & restaurant & street & subway station & Average \\
 \bottomrule
-top1 & $20\%$ & {\color{blue}$70\%$} & $10\%$ & $30\%$ & $20\%$ & $10\%$ & $60\%$ & $20\%$ & $100\%$ & $30\%$ \\
-top3 & $40\%$ & $80\%$ & $40\%$ & $90\%$ & $80\%$ & $30\%$ & $80\%$ & $100\%$ & $100\%$ & $70\%$ \\
+Baseline & $60\%$ & $40\%$ & $60\%$ & $40\%$ & $10\%$ & $40\%$ & $60\%$ & $30\%$ & $60\%$ & $70\%$ & $47\%$\\
+RNH1 & $30\%$ & $40\%$ & $70\%$ & $40\%$ & $20\%$ & $30\%$ & $50\%$ & $50\%$ & $70\%$ & $50\%$ & $45\%$ \\
+RNH2 & $20\%$ & $40\%$ & $70\%$ & $40\%$ & $40\%$ & $30\%$ & $50\%$ & $40\%$ & $70\%$ & $60\%$ & $46\%$ \\
+GSR & $60\%$ & $50\%$ & $90\%$ & $50\%$ & $30\%$ & $60\%$ & $60\%$ & $60\%$ & $70\%$ & $80\%$ & $61\%$ \\
+Our & $80\%$ & $60\%$ & $60\%$ & $40\%$ & $50\%$ & $100\%$ & $30\%$ & $0\%$ & $100\%$ & $20\%$ & $54\%$ \\
 \bottomrule
 \end{tabular}
 }
-\caption{Recognition Accuracy for 10 Audio Scenes}
-\label{tab:ac}
+\caption{Recognition accuracy for 10 audio scenes}
+\label{table:ac}
 \end{table}
 
+\begin{figure}[htb]
+\centering
+\input{figure/evaluation/sceneeval}
+\caption{Recognition accuracy for 10 audio scenes}
+\label{fig:sceneeval}
+\end{figure}
 
 \section{Summary}
