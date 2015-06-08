@@ -92,6 +92,21 @@ Because K-means has a faster speed for iterating than GMMs, so we first run K-me
 This part use the gaussian toolbox provided by Matlab\footnote{http://cn.mathworks.com/help/stats/gmdistribution-class.html} . 
 
 
+\section{Training Data Selection}
+Kullback-Leibler (KL) divergence is a measure of the difference between two probability distributions. More precisely, KL divergence of $Q$ from $P$, denoted by $KL(P||Q)$, is a measure of the information loss when we use $Q$ to approximate $P$.
+
+For continuous random variables $\mathbf{x}$ and two distributions $P$ and $Q$, the KL divergence of $Q$ from $P$ is defined as:
+\begin{equation}
+KL(P||Q) = \int_{-\infty}^{+\infty}\ln(\frac{p(\mathbf{x})}{q(\mathbf{x})})p(\mathbf{x})\mathrm{d}x,
+\label{eq:kl}
+\end{equation}
+where $p(\mathbf{x})$ and $q(\mathbf{x})$ are the density functions of $P$ and $Q$.
+
+From the above equation, we can find that KL divergence is non-symmetric \ie $KL(P||Q)$ may not equal to $KL(Q||P)$. In practice, sometimes a symmetric measure is needed, thus $\overline{KL}(P||Q)$ is often used, that is:
+\begin{equation}
+\overline{KL}(P||Q) = \overline{KL}(Q||P) = \frac{1}{2}(KL(P||Q) + KL(Q||P)).
+\end{equation}
+
 \section{Summary}
 The method we propose for audible event detection are introduced in this chapter. 
 We first apply a noise reduction technique on the downloaded audio clips. 
