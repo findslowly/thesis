@@ -1,52 +1,78 @@
 \chapter{Scene Recognition}
-In this chapter, we discuss the process of how a scene is recognized by detected events in the clip. 
-This chapter includes the issue mining scene-event relations from downloaded script data.
+In this chapter, we discuss the process of how a scene is recognized by detected events in the testing clip. 
+This chapter includes the issue of mining scene-event relations from downloaded script data.
 Then a segmenter algorithm is used to segment audio data for event detection. 
 In the last, the detected event sequence is used for scene recognition. 
 
 \section{Scene-Event Relation Mining}
+As mentioned before, the goal of our project is to build a relation between audio scenes and audible events and then infer scenes by this relation.  
+We have already introduced the data we are going to use: scripts for movie, play, TV series, etc. 
+In the chapter of data preparation, we have splitted out the small contexts in scripts. 
+Each context has one scene attributed to them, and in this section, we are going to explore the analysis of contexts under the condition that its scene is known. 
 
-%\subsection{Event TF-IDF Calculation}
+The mathematical simplification here is to calculate the posterior probability of $P(S|E)$, assumming $S$ is a scene, $E$ is an audible event. 
+Using this probability, we could basically tell what scene is the most likely one if we have detected the presence of event $E$. 
+Term frequency of each event in respective scenes give us a perspective into this issue. 
+It is natural to think that a scene is recogized if a high-frequency event in its context is detected. 
+However, mearly using this term frequency may not work out in the case of common events. 
+Common events are the audible events that appear in lots of scenes, so their presence do not provide a discernible knowledge for what is the most likely scene. 
 In order to calculate how important a audible event is in identifing a scene, we need a metric for calculating event distinctiveness. 
-It is not enough if we only use the event happening frequency as a single metric for this distinctiveness. 
-Because if events are ranked this way, common events which happen frequently in many scenes would rank high and bring no effect for recognizing different scenes. 
-To tackle this issue, Term Frequency-Inverse Document Frequency (TF-IDF) statistic is used for calculating event distinctiveness. \\ 
+To tackle this issue, Term Frequency-Inverse Document Frequency (TF-IDF) statistic is used for calculating event distinctiveness. 
 
 The original TF-IDF statistic is used to reflect how important a word is to a document in a corpus. 
+In a corpus with many documents, the TF-IDF value of a word to one document increases propotionally to the frequency of that word in that document. 
+But the value decreases if the word appears in many other documents. 
+Overall it measures the distictivenesss of word-document pair. 
 We use the idea of TF-IDF statistic, but applied to our special case. 
-In our case, the corpus refers to the all the context files, each contains one scene. 
-Document is therefore one scene, and is comprised of all the context files that have been attributed to that scene. 
+In our case, the corpus refers to all of the context files, each contains one scene. 
+Document is therefore one scene type. 
 Word here means an audible event. 
 Suppose $e$ and $s$ represent a event and a scene, respectively. 
 $f(e,s)$ denotes the number of context that e has appeared in it among all the contexts that belong to scene $s$.  
-$C$ denotes the number of all contexts regardless of scenes. 
+$N$ is the total document number in consideration, and $N_e$ is the number of documents the event $e$ appears in. 
 Hence TF and IDF are calculated as: 
 \begin{equation}
 \begin{split}
- TF &= 1 + \log{f(e,s)} \\ 
- IDF &= 1 + \log{\frac{C}{f(e,s)}}
+ TF &= \log{1+f(e,s)} \\ 
+ IDF &= 1 + \log{\frac{N}{N_e}}
 \end{split}
 \end{equation} 
 
+After these two values are calculated, the TF-IDF value are therefore get by multiplying them together. 
+\begin{equation}
+ TF-IDF = TF \mult IDF 
+\end{equation}
+
 \section{Audio Segmentation}
 Once the models are built, we are ready to use it to test on a potential event clip. 
-But for the problem of scene recognition, we need to detect the events happening in a clip, therefore, a audio segmentation technique is employed to segment audio clips. \\ 
+But for the problem of scene recogniton, the testing data are a clip which may contain multiple events. 
+We apply a segmenter to split out the silence or background noise part, and return segments containing some events to be detected. 
 
 There are lots of research carried out on the segmentation of audios.
 Some may simply use the average frame energy as the threshold to cut the clips, while other complicated methods involve more features and even use machine learning techniques. 
 In this project, we use a method of setting a threshold combining frame energy and spectral centroids, and this method is described in \cite{giannakopoulos2009method}.
 This method uses two features from audio:
 \begin{itemize}
-\item{Frame Energy: this features depicts the overall energy level of one frame. Typically frames where there are some events happening have a higher energy than silent frames.}
-\item{Spectral centroid: this represents the "center of gravity" of the audio spectrum. For example, the spectral centroid of the i-th frame (denoted by $ C_i$) is given by the equation:
-\[
+\item{Frame Energy: this features depicts the overall energy level of one frame. 
+Typically frames where there are some events happening have a higher energy than silent frames.
+Let $x_i$ be the signal value of the $i$-th frame, and suppose there is N data points in this frame. 
+Then frame energy $E_i$ of the $i$-th frame is calculated as:  
+\begin{equation}
+E_i = \frac{\sum\limits_{n=1}^N(x_i(n))}{N}
+\end{equation}
+}
+\item{Spectral centroid: this represents the "center of gravity" of the audio spectrum. For example, the spectral centroid of the $i$-th frame (denoted by $ C_i$) is given by the equation:
+\begin{equation}
 C_i = \frac{\sum\limits_{k=1}^Nk\times Amp(k)}{\sum\limits_{k=1}^NAmp(k)}
-\]
+\end{equation}
+In this equation, $Amp(k)$ is the amplitude corresponding to bin $k$ in Discrete Fourier Transform (DFT) spectrum. 
+So a higher spectral centroid denotes a higher frequency in this frame. Because noises are often in a low frequency, we could use this feature to filter them out. 
 }
 \end{itemize}
 
-In this equation, $Amp(k)$ is the amplitude corresponding to bin $k$ in Discrete Fourier Transform (DFT) spectrum. 
-So a higher spectral centroid denotes a higher frequency in this frame. Because noises are often in a low frequency, we could use this feature to filter them out. 
+After these two features are calculated for every frames, they are further smoothed and averaged to get a threshold. 
+The final segmentation is conducted 
+!!!  or | 
 
 \section{Scene Inference}
 Once a event sequence is detected, we use that sequence of events to infer the scene we think it's the most likely one. 

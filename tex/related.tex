@@ -1,15 +1,21 @@
 \chapter{Related Works}
+\section{Audible Events Taxonomy}
+Audible events are a concept hard to define, especially for the detailed sound sources. 
+Researchers have long been researching the area of the automatic classification of environmental sound. 
+But the research toward an audible event taxonomy is little. 
+An early taxonomy for environment sounds was proposed by Schafer \cite{schafer1993soundscape}, which divides sounds into six broad categories: natural, human, society, mechanical, silence and indicators. 
+Brown \cite{brown2011towards} proposed a more detailed taxonomy by dividing the large acoustic environment into indoor and outdoor environment, and the outdoor environment is further separated into urban, rural, wilderness and underwater environment. 
+In his paper, he gives some sound event in urban context.
+Salamon \cite{salamon2014dataset} focuses on the urban sound taxonomy, and proposed a detailed sound event under the context of urban environment. 
+In his method, he proposed four groups of human, nature, mechanical, and music \footnote{\url{https://serv.cusp.nyu.edu/projects/urbansounddataset/taxonomy.html}}. \\ 
+
+\section{Audio Event Detection}
 There are some research done on the definition of audio sound context and on the taxonomy of some audible events. 
 But the previous work on this part has a limit of extending to multiple scenes. 
 Automatic recognition of audio context and event has known also from many earlier works. 
 However, most of the previous work on recognizing scenes focuses on the task of classification under the infomation of scene audio clips, instead of the underlying audible events. 
 There has also few research done on modeling the events for inferring audio context, but they require a manual label of training data, which costs much time and may not be easily extended to other events. \\ 
 
-An early taxonomy for environment sounds was proposed by Schafer \cite{schafer1993soundscape}, which divides sounds into six broad categories: natural, human, society, mechanical, silence and indicators. 
-Brown \cite{brown2011towards} proposed a more detailed taxonomy by dividing the large acoustic environment into indoor and outdoor environment, and the outdoor environment is further separated into urban, rural, wilderness and underwater environment. 
-In his paper, he gives some sound event in urban context.
-Salamon \cite{salamon2014dataset} focuses on the urban sound taxonomy, and proposed a detailed sound event under the context of urban environment. 
-In his method, he proposed four groups of human, nature, mechanical, and music \footnote{https://serv.cusp.nyu.edu/projects/urbansounddataset/taxonomy.html}. \\ 
 
 One of the approaches to consider audio events in scene recognition is introduced by Cai  \cite{cai2006flexible}. 
 They proposed a flexible framework to recognize 5 audio context using 10 predifined events. 
@@ -18,6 +24,7 @@ Another event-based audio context recognition is proposed by Heittola \cite{heit
 They build histograms for each scene with a set of predifined audio events, and calcuate the cosine distance of the histograms with a new histogram of detected events.\\
 
 
+\section{Audio Scene Detection}
 In the area of audio scene recognition, Gaunard \cite{gaunard1998automatic} proposed an HMM-based environmental noise recognition system. 
 It uses discrete HMM as the model and linear prediction cepstral coefficients (LPCCs) as features. 
 The system can outperforms human subjects for classifying 5 types of environmental noise, namely car, truck, moped, aircraft, and train. 

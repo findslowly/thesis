@@ -2,19 +2,19 @@
 
 \chapter{Event Detection}
 In this chapter, we will introduce the mechanism of event detection in this project. 
-First for the audio clips we have downloaded, we need to extract relevant features from them. 
+We first apply some noise reduction or audio enhancement technique on the training data for our events. 
+Then we extract MFCC features from the training clips. 
 After getting features, a Gaussian Mixture Model is built on those features. 
-Then for the new testing audio, we would implement a segmentation algorithm to cut the clip into pieces and calculate the score of each models to decide which events those segments are detected.   
 
 \section{Audio Enhancement}
 Because the audios downloaded from SSEs are uploaded by other users. 
-Those clips may be recorded using professional recorder device, but more often, are recorded using the convenient cellphones. 
-Hence we need to apply a noise reduction step to enhance the audio clips. \\ 
+Those clips are recorded by various types of devices and in different environments. 
+Hence we need to apply a noise reduction step to enhance the audio clips. 
 
 Among algorithms for speech enhancement, spectral subtraction was one of the first algorithms proposed. 
 Although it was originally proposed for speech enhancement, we use it in our project for noise is pretty much the same in speech or in more general audios. 
 The basic principles is that we assume the clean signal add some additive noise becomes the audio we get. 
-Then if we subtract the noise spectrum from the audio, we may get signal close to the original clean one. \\  
+Then if we subtract the noise spectrum from the audio, we may get signal close to the original clean one. 
 
 Mathematically speaking, assume the input signal is $ y(t) = x(t) + n(t)$, where the signal $x(t)$ is the signal of interest and $n(t)$ is the additive noise. 
 The audio enhancement process takes on the following steps:
@@ -28,24 +28,23 @@ Then we could get an estimated clean signal spectrum: $\hat{X_i}(k)$.
 \end{enumerate}
 
 A speech processing toolbox for Matlab called VoiceBox is used for spectral subtraction\footnote{http://www.ee.ic.ac.uk/hp/staff/dmb/voicebox/voicebox.html}.
-% example here 
-
+% noise subtraction example here 
 
 \section{Feature Extraction}
 Since the audio data is downloaded from a sound website where clips are crowdsourced, the clips are in various format. 
 We converted all audio clips to WAV format and averaged the channels into one if it has multiple channels. 
-Moreover, clips are all downsampled to 16khz sample rate for feature extraction.\\ 
+Moreover, clips are all downsampled to 16khz sample rate for feature extraction. 
 
 For the audio data, mel-frequency cepstrum coefficients (MFCCs) features are a widely-used feature. 
 It was brought up by Davis and Mermelstein in the 1980s. 
 MFCC features extract the spectral envelope from spectrums of audio frames.
 Basically, the process of extracting MFCCs start by applying Fast Fourier transform (FFT) on framed audio. 
 FFT transform audio data from Amplitude-Time domain (frame) into Amplitude-Frequency domain (spectrum).  
-As each audio frame is transformed into a spectrum, the spectral envelope is extracted by Inverse FFT (IFFT).\\ 
+As each audio frame is transformed into a spectrum, the spectral envelope is extracted by Inverse FFT (IFFT).
 
 Actually, one more filtering is performed before applying IFFT on spectrums. 
 Because MFCC features are based on human perceptual experiment, and human's ear is like a natural filter, where low-frequency area has more filter and high-frequency area has less. So a nonlinear function is applied to original spectrum to transform the frequency axis into the mel scale. 
-A popular formula to convert $f$ herts into $m$ mel is: \\ 
+A popular formula to convert $f$ herts into $m$ mel is:  
 \begin{equation}
 	m = 2595 \times \log_{10}(1+\frac{1}{700})
 \end{equation} 
@@ -58,7 +57,7 @@ Due to the transformation form frequency to mel scale, MFCC focuses on the more 
 \section{Model Selection}
 From the previous feature extraction process, we could a matrix representation for an audio clip. 
 The column number stands for the dimension of the features and each row corresponds to one observation. 
-From these data, we need to build a model that can capture the overall feature distribution and also are convenient to use for testing data.\\
+From these data, we need to build a model that can capture the overall feature distribution and also are convenient to use for testing data.
 
 For this goal, Gaussian Mixture Model (GMM) is used. 
 First, a multivariate gaussian distribution has the following probability density:
@@ -84,10 +83,13 @@ The intuition of using GMM to model the audio events is that the individual comp
 Like in speech, a words may consist of some vowels and consonants. 
 An audio event is naturally more complicated than speech, and may therefore contain more characteristics. 
 Therefore, we use different gaussian densities with different $\mathbf{\mu}$ and $\mathbf\sigma$, where the $\mathbf\mu$ may capture the overall value for one class and the $\mathbf\sigma$ shows the variation of that class.  
-When these densities are added together, forming a GMM, they can have a good depiction of some unusual distributions. \\ 
+When these densities are added together, forming a GMM, they can have a good depiction of some unusual distributions. 
 
-We train our GMM models on the training data using Expecation-Maximization(EM) algorithm. 
-This part use the gaussian toolbox provided by Matlab software. 
+Before training GMMs for event training data, we first apply K-means algorithm on the data. 
+K-means is also an unsupervised clustering method. 
+It uses a Expectation-Maximization step to update the cluster centroid. 
+Because K-means has a faster speed for iterating than GMMs, so we first run K-means and use its centroid result as initials for further iterating of GMMs. 
+This part use the gaussian toolbox provided by Matlab\footnote{http://cn.mathworks.com/help/stats/gmdistribution-class.html} . 
 
 
 \section{Summary}
@@ -98,4 +100,4 @@ Then the estimated noise are subtracted from the input signal to get a cleaned s
 The features we use in this task is MFCC features. 
 They are notable for good capture of audio features. 
 From the extracted MFCC features, we build Gaussian Mixture Models for features of each event. 
-GMM has the capability to model some complex distribution by its components and this helps us for modelling audible events.  
+GMM has the capability to model some complex distribution by its components and this helps us for modelling audible events. 

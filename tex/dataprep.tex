@@ -41,15 +41,17 @@ Therefore, they are distinctive for corresponding scenes, and need to be separat
 Usually, plants do not give out sound, so only the basic \textit{tree}, \textit{leaf} and \textit{grass} are listed here. 
 The final subgroup is natural elements, which tends to appear in audio as the background sound.  
 
+Finally, Signal and Instrument are put under the category of \textit{Other Sound}. 
+They include common signals and musical instrument we would likely to hear in life. 
 
-They respectively list the things in nature which may generate a sound. 
-
-Finally, Signal and Instrument are put under Other Sound. 
-They include common signals and musical instrument in life. 
+% insert a event graph 
 
 \section{Audio Data}
-The audio clips for the events in the eventlist we created are downloaded from SSE. 
+Because in this project, we try to build a detection model for audible events, so we need data to train those events. 
+Hence, we utilize Sound Search Engines (SSEs). 
+The SSE is like search engine for sound clips, and its collection of sound are often crowdsourced from various users. 
 There are many available SSEs for crawling sound clips, e.g., SoundJax\footnote{http://soundjax.com}, FindSounds\footnote{http://findsounds.com}, and Freesound\footnote{http://freesound.org}. 
+Some SSEs even have open API for accessing its resources. 
 We use all these SSEs to query the audio events and then download their corresponding clips. 
 
 However, this downloading process is carried out with some filtering technique. 
@@ -57,7 +59,7 @@ Because the events we are considering suitable are ``primitive'' constituents fo
 So we set up a duration threshold for candidate audio clips, i.e., only downloading clips from 0.5 to 15 seconds.  
 
 \section{Scene Context Data}
-In some previous project, researchs are labelling the audible events happening in some scenes. 
+In some previous project, researchers are labelling the audible events happening in some scenes. 
 This method is not only laborious, but also has a limitation for expanding to other scenes.
 In this thesis, we are using a automatical way of extracting the relation between audible events and scenes.
 The data we use are well-written scripts, including movies, plays, TV series, etc. 
@@ -71,13 +73,13 @@ In well-written scripts, whenever the plot switches to a new place, there is a s
 \label{fig:script}
 \end{figure}
 
-Figure \ref{fig:script} gives an example of what a script snippet may looks like. Usually on the top of it, there is a single sentence that specifies the location, time information for the paragraphs below it, which we would like to call as "scene-switching sentence". 
-For example, in the example script, "INT. JIMMY's BEDROOM - NIGHT" is the scene-switching sentence. 
-"INT" denotes this scene happens in a indoor environment. 
-sometimes, "EXT" is used to denote ourdoor environment. 
+Figure \ref{fig:script} gives an example of what a script snippet may looks like. Usually on the top of it, there is a single sentence that specifies the location, time information for the paragraphs below it, which we would like to call as ``scene-switching sentence''. 
+For example, in the example script, ``INT. JIMMY's BEDROOM - NIGHT'' is the scene-switching sentence. 
+``INT'' denotes this scene happens in a indoor environment. 
+sometimes, ``EXT'' is used to denote ourdoor environment. 
 In the middle of this sentence, some word phrase or sentence may be used to represent the context or scene. 
 In this case, we may say this is a bedroom scene. 
-Lastly, "NIGHT" or "DAY" is ued to refer the time when filmakers are shooting this script. 
+Lastly, ``NIGHT'' or ``DAY'' is ued to refer the time when filmakers are shooting this script. 
 When we are mining the relation between audible events and scenes, the scene-switching sentence needs to be further processed. 
 
 Currently, there are some websites that host a collection of scripts. 
@@ -89,30 +91,108 @@ After cleaning, there are 5611 scripts in total.
 
 \section{Audio Scene List}
 As mentioned before, well-written scripts provide a clear-defined boundary for scene switch. 
-There are words words like "Cut to:", "Scene:", "INT", "EXT" to denote this kind of switching, and they are called "scene identifier".  
+There are words words like ``Cut to:'', ``Scene:'', ``INT'', ``EXT'' to denote this kind of switching, and they are called ``scene identifier''.  
 Following scene identifier, there usually is a short sentence or some words describing the scene the following paragraph is in. 
-We call the sentence formed by scene identifier and some scene-related phrase as "scene-switching sentence"
-We use the word "context" to represent the paragraphs between scene-switching sentence. \\ 
+We call the sentence formed by scene identifier and some scene-related phrase as ``scene-switching sentence''
+We use the word ``context'' to represent the paragraphs between scene-switching sentence. 
 
 % a graph here to show a real example 
+\begin{figure}[htb]
+\centering
+\hspace*{-0.5cm}
+\includegraphics[scale=0.6]{figure/dataprep/script_words}
+\caption{A Example of Script}
+\label{fig:script_words}
+\end{figure}
 
-After describing the terminology we used for scripts, we need to extract the scene representing a context from the "scene-switching sentence". 
-The "scene-switching sentence" sometimes contains noise, like character's name, location name, and some propositions are mixed with the actual scene name we want to extract. 
+After describing the terminology we used for scripts, we need to extract the scene representing a context from the ``scene-switching sentence''. 
+The ``scene-switching sentence'' sometimes contains noise, like character's name, location name, and some propositions are mixed with the actual scene name we want to extract. 
+For example, in the previous example script, the raw scene name we get is ``Jimmy's bedroom''. 
+Clearly, the ``Jimmy's'' is just a posessive term, and ``bedroom'' is the ideal scene we want to extract. 
+
 To filter out these words that could not form a scene, we use the Stanford CoreNLP \cite{manning2014corenlp}. 
 Stanford CoreNLP integrates many NLP tools, including the part-of-speech (POS) tagger, the named entity recognizer (NER), the dependency parser, etc. 
 It has a online demo here\footnote{http://nlp.stanford.edu:8080/corenlp/process}. 
-In our case, we would use Stanford CoreNLP to eliminate the following items in the "scene-switching sentence":
-\begin{itemize}
-\item Time indicator (e.g. day, night, noon) 
-\item Possessive terms (e.g. his, her, Jimmy's)
-\item Adjectives, adverbs, determiner 
-\item Location terms 
-\item Non-alphabetic terms 
-\end{itemize}
-After these terms are filtered out, we take the words left as the scene for its following context. 
-This results a file containing 104523 scenes. 
-Then we merge the same scene together, and filter out those scenes with occurrence less than 50 times. 
-In the end, we get a scene list of 133 scenes. 
+In our case, we would use the following part of Stanford CoreNLP:
+ 
+First is Named Entity Recognition. The NER could help us to detect the names of things. For example, person and company names, location, and even time information. 
+We use NER to remove these specific names, since they provide no help for general scene name collection. 
+Figure \ref{fig:ner} is the result of the query ``JIMMY's BEDROOM - NIGHT''. 
+It clearly labels ``JIMMY'' as person, and ``NIGHT'' as time. 
+\begin{figure}[htb]
+\centering
+\includegraphics[scale=0.6]{figure/dataprep/ner}
+\caption{A Example of Named Entity Recognition}
+\label{fig:ner}
+\end{figure}
+
+Second is the Part-of-Speech (POS) tagger. A POS tagger is a tool that assigns parts of speech to each word. 
+The general given are noun, verb, adjectives, etc.  
+The POS tagger included in stanford coreNLP uses the Penn Treebank tag set\footnote{\url{https://www.ling.upenn.edu/courses/Fall\_2003/ling001/penn\_treebank\_pos.html}}.  
+After using the POS tagger, we could get a tag list of tags for every words and other tokens. 
+We filter them by setting a ``Forbidden Tags'' list, i.e., if any token has the tag in that list, then the token is removed.  
+Table \ref{tab:forbiddentags} shows a the detailed tag we refuse and their meanings. 
+
+\begin{table}[htb]
+\centering
+\caption{Forbidden Tags}
+\begin{tabular}{ll}
+\hline
+Tag & Description \\
+\hline
+CD & Cardinal number\\ 
+DT & Determiner\\ 
+IN & Preposition or subordinating conjunction\\ 
+JJ & Adjective  \\
+POS & Possessive ending  \\ 
+PRP & Personal pronoun  \\
+RB & Adverb\\ 
+TO & to \\ 
+VBN & Verb, past participle \\ 
+\hline
+\end{tabular}
+\label{tab:forbiddentags}
+\end{table}
+
+\begin{figure}[htb]
+\centering
+\includegraphics[scale=0.6]{figure/dataprep/pos}
+\caption{A Example of Part-of-Speech Tagging}
+\label{fig:pos}
+\end{figure}
+
+Figure \ref{fig:pos} gives an example of the POS tagging result. 
+Note that ``JIMMY'' is labelled as NNP, i.e., proper noun. 
+So it is necessary to combine NER for correctly recognize person names. \\ 
+
+Apart from the previous mentioned two main tools, we also remove non-alphabetic tokens. 
+With all these preprocessing of scene names, we finally get 288681 scenes. 
+Considering much of the scenes are the same, a merging process is then carried out for combining similar scene names. 
+We select those scenes which has a occurence larger than 50 times, thus resulting 319 scenes.
+The full list of these 319 scenes can be accessed online\footnote{\url{http://adapt.seiee.sjtu.edu.cn/~xunxu/asr/sceneList.txt}}. 
+Table \ref{tab:top10scenes} shows the top 10 scenes ranked by occurrence. 
+% a table of the top 10 scenes. 
+\begin{table}[htb]
+\centering
+\caption{Top 10 Occurred Scenes}
+\begin{tabular}{ll}
+\hline
+Scene & Occurrence \\
+\hline
+house & 3537 \\ 
+office & 3259 \\ 
+apartment & 2919 \\ 
+room & 2580 \\ 
+bedroom & 2257 \\ 
+car & 1699 \\ 
+street & 1622 \\ 
+kitchen & 1431 \\ 
+living room & 1374 \\ 
+tardis & 1259 \\ 
+\hline
+\end{tabular}
+\label{tab:top10scenes}
+\end{table}
 
 \section{Summary}
 In this section, we review our data preparation process. 
