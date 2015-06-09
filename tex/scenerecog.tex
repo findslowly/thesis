@@ -100,3 +100,13 @@ After multipling with the TF-IDF scores of each event to each scene, we could ge
 Then the highest scored scene are choosen as the recognized scene. 
 
 \section{Summary}
+The process of scene recognition is reviewed here. 
+Because our system works in a way of first detecting events out of a scene clip, we apply a segmenter to segment out the silence part of a scene clip. 
+Then a previously mentioned event detection model is used to detect events from the segments. 
+After detection, we could get a detected events sequence. 
+The process for scene recognition is conducted with the help of a score we calculated from script data. 
+The score is the Term Frequency-Inverse Document Frequency (TF-IDF) of a event to a scene. 
+The idea of this score is similar to its original application in identifying important words for a document. 
+In our problem, we use it to identify important audible events for a scene. 
+We use this TF-IDF value as the weight for event in contributing a scene. 
+After all the calculation, the scene which enjoys a highest score is output as the detected scene. 

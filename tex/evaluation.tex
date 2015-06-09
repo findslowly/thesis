@@ -1,4 +1,6 @@
 \chapter{Evaluation}
+Experiments of the performance of our system is evaluated here. 
+We evaluate our event detection and scene recognition system respectively. 
 
 \section{Event Detection Evaluation}
 \subsection{Evaluation Data and Metric}
@@ -27,10 +29,10 @@ Class-wise event-based calculate $r$, $e$, and $c$ for each class separately. An
 Finally, the F-measure for these three metric are averaged as the final metric of a system, and we will compare this metric with other systems. 
 
 \subsection{Evaluation Process}
-The evaluation takes on two parts: self tuning and system comparison. \\ 
+The evaluation takes on two parts: self tuning and system comparison. 
 
 Audio events are detected using the previous proposed GMM method, but there are still some parameters or configuration to be tuned for the best performance of our model.
-Most importantly, the number of component number in GMM are ser by human, we run a evaluation for different component numbers from 4 to 45 to see how the number affects the F-measure. \\ 
+Most importantly, the number of component number in GMM are ser by human, we run a evaluation for different component numbers from 4 to 45 to see how the number affects the F-measure. 
 
 In system comparison, we use other models from the aforementioned IEEE AASP Challenge\footnote{http://c4dm.eecs.qmul.ac.uk/sceneseventschallenge/resultsOL.html}. 
 In the submitted papers, contestents also carried out the same evaluation on the developement dataset, so the comparison are done on the same dataset.  
@@ -39,7 +41,7 @@ In the submitted papers, contestents also carried out the same evaluation on the
 \subsubsection{Component Number Evaluation}
 Figure \ref{fig:component} is the result of average F-measure with regard to different component numbers in GMM. 
 % component.eps
-\begin{figure}[htb]
+\begin{figure}[htb!]
 \centering
 \input{figure/evaluation/component}
 \caption{F-measure for different component number}
@@ -47,10 +49,10 @@ Figure \ref{fig:component} is the result of average F-measure with regard to dif
 \end{figure}
 
 As we can see in Figure \ref{fig:component}, the F-measure gradually rise when component number are increasing. 
-But after component number reaching 18 or so, the F-measure roughly stays the same. \\ 
+But after component number reaching 18 or so, the F-measure roughly stays the same.  
 
 % running time eps 
-\begin{figure}[htb]
+\begin{figure}[htb!]
 \centering
 \input{figure/evaluation/componentTime}
 \caption{Running time for different componet number}
@@ -58,7 +60,7 @@ But after component number reaching 18 or so, the F-measure roughly stays the sa
 \end{figure}
 Moreover, Figure \ref{fig:componentTime} is the running time of our system with regard to the number of components. 
 There is basically a linear relationship between the number of components and the total running time. 
-Hence, we choose to use 18 as the component number for our system, since this component number has a good F-measure, and the speed for training models are also fast.\\ 
+Hence, we choose to use 18 as the component number for our system, since this component number has a good F-measure, and the speed for training models are also fast.
 
 \subsubsection{Event Detection F-measure Evaluation}
 \begin{table}[htb]
@@ -68,33 +70,33 @@ Hence, we choose to use 18 as the component number for our system, since this co
 \hline
          & EB    & CWEB  & FB    & Average \\
 \hline
-baseline & 15.4  & 13.5  & 20.6  & 16.50   \\
-NR2      & 11.06 & 20.9  & 32.49 & 21.48   \\
-NVM      & 47.53 & 41.28 & 54.41 & 47.74   \\
-Our      & 53.44 & 40.07 & 52.41 & 48.64   \\
-VVK      & 51.13 & 39.77 & 56.28 & 49.06   \\
-GVV      & 46.8  & 36.7  & 65.2  & 49.57   \\
-DHV      & 51.05 & 38.05 & 61.6  & 50.23   \\     
+baseline & 0.154  & 0.135  & 0.206  & 0.1650   \\
+NR2      & 0.1106 & 0.209  & 0.3249 & 0.2148   \\
+NVM      & 0.4753 & 0.4128 & 0.5441 & 0.4774   \\
+Our      & 0.5344 & 0.4007 & 0.5241 & 0.4864   \\
+VVK      & 0.5113 & 0.3977 & 0.5628 & 0.4906   \\
+GVV      & 0.468  & 0.367  & 0.652  & 0.4957   \\
+DHV      & 0.5105 & 0.3805 & 0.616  & 0.5023   \\     
 \hline
 \end{tabular}
 \end{table}
 There are seven systems in the online challenge, but the system "SCS" does not list their class-wise event based result, so it is excluded for comparison. 
-\begin{figure}[htb]
+\begin{figure}[htb!]
 \centering
 \input{figure/evaluation/eventdetectF1}
-\caption{}
-\label{fig:componentTime}
+\caption{Event Detection F-Measure}
+\label{fig:eventdetectF1}
 \end{figure}
-
+As we could see visually in Figure \ref{fig:eventdetectF1}, our event detection system have a accuracy close to the highest-performing system. 
 
 \section{Scene Recognition Evaluation}
 \subsection{Evaluation Data}
 After we have done event detection, we use the previous proposed scene inference method to do scene recognition. 
-In this section, a 10-scenes evaluation experiment are carried out for evaluating our system's performance.\\ 
+In this section, a 10-scenes evaluation experiment are carried out for evaluating our system's performance.
 
 The 10 scenes we used in this evaluation is \textit{bathroom, beach, concert, forest, kitchen, office, park, restaurant, street, subway station}. 
 These scenes are chosen both covering indoor and outdoor, quiet and noisy environments. 
-The testing clips we used are downloaded mainly from previously mentioned sound search engines, and there is 10 clips for each scene, i.e., 100 in total. \\ 
+The testing clips we used are downloaded mainly from previously mentioned sound search engines, and there is 10 clips for each scene, i.e., 100 in total. 
 
 \subsection{Baseline systems}
 In this evaluation, we need to compare our systems with other systems. 
@@ -104,7 +106,7 @@ On the website, there are 4 scene classification systems and one baseline scene 
 Because of some programming issues, we choose 2 classification systems, together with the baseline scene classifier for comparison. 
 Table \ref{table:systems} shows a summary of the systems used for comparison and our systems. 
 
-\begin{table}[htb]
+\begin{table}[htb!]
 \caption{Summary of systems}
 \begin{tabular}{ll}
 \toprule
@@ -121,19 +123,26 @@ Table \ref{table:systems} shows a summary of the systems used for comparison and
 
 \subsection{Evaluation Result}
 Table \ref{table:ac} show the recognition accuracy for each audio scenes. 
+As we could see in this table, GSR has a highest average accuracy of $61\%$, while our model comes second with accuracy of $54\%$. 
+However, the variation in our recognition result is very large. 
+Our model have 5 scenes which get the highest accuracy, but at the same time, perform bad in \textit{restaurant} and \textit{subway station}. 
+This is reasonable for our approach. 
+Because our system work by detecting distinct audible events. 
+Thus favoring scenes where many distinct events exist, like in office, \textit{phone, printer, paper} could be a distinct event. 
+But in scene like \textit{restaurant}, it is generally filled with noise atmosphere, thus hard for our system to detect something useful. 
 
-\begin{table}[htbp]
+\begin{table}[htb!]
 \centering
 \resizebox{0.95\textwidth}{!}{
 \begin{tabular}{lccccccccccc}
 \toprule
      & bathroom & beach & concert & forest & kitchen & office & park & restaurant & street & subway station & Average \\
 \bottomrule
-Baseline & $60\%$ & $40\%$ & $60\%$ & $40\%$ & $10\%$ & $40\%$ & $60\%$ & $30\%$ & $60\%$ & $70\%$ & $47\%$\\
+Baseline & $60\%$ & $40\%$ & $60\%$ & $40\%$ & $10\%$ & $40\%$ & \textbf{$60\%$} & $30\%$ & $60\%$ & $70\%$ & $47\%$\\
 RNH1 & $30\%$ & $40\%$ & $70\%$ & $40\%$ & $20\%$ & $30\%$ & $50\%$ & $50\%$ & $70\%$ & $50\%$ & $45\%$ \\
 RNH2 & $20\%$ & $40\%$ & $70\%$ & $40\%$ & $40\%$ & $30\%$ & $50\%$ & $40\%$ & $70\%$ & $60\%$ & $46\%$ \\
-GSR & $60\%$ & $50\%$ & $90\%$ & $50\%$ & $30\%$ & $60\%$ & $60\%$ & $60\%$ & $70\%$ & $80\%$ & $61\%$ \\
-Our & $80\%$ & $60\%$ & $60\%$ & $40\%$ & $50\%$ & $100\%$ & $30\%$ & $0\%$ & $100\%$ & $20\%$ & $54\%$ \\
+GSR & $60\%$ & $50\%$ & \textbf{$90\%$} & \textbf{$50\%$} & $30\%$ & $60\%$ & \textbf{$60\%$} & \textbf{$60\%$} & $70\%$ &\textbf{ $80\%$} & \textbf{$61\%$} \\
+Our & \textbf{$80\%$} & \textbf{$60\%$} & $60\%$ & $40\%$ & \textbf{$50\%$} & \textbf{$100\%$} & $30\%$ & $0\%$ & \textbf{$100\%$} & $20\%$ & $54\%$ \\
 \bottomrule
 \end{tabular}
 }
@@ -149,3 +158,10 @@ Our & $80\%$ & $60\%$ & $60\%$ & $40\%$ & $50\%$ & $100\%$ & $30\%$ & $0\%$ & $1
 \end{figure}
 
 \section{Summary}
+In this chapter, we introduced the evaluation of our systems. 
+It include two parts: first the event detection evaluation and then the scene recognition evaluation.
+In the first evaluation, we compare our model with submitted systems to the IEEE AASP Challenge. 
+Our system has a average F-measure of 0.4864, which come close to the highest one: 0.5023. 
+In the scene recognition evaluation, we conduct a 10 scene classification with other 4 algorithms. 
+We achieved second in the average accuracy. 
+But it is notable that we have five scene accuracies which is ranked the first.  

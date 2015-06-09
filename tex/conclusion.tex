@@ -34,9 +34,7 @@ The TF-IDF values are then used as the weight of one event to a scene.
 In our experiment, we use the data from IEEE AASP Challenge to evaluate our event detection performance. 
 Comparing with other 6 systems, our event detection model achieves a middle-performing result. 
 Because we use the conventional MFCC features trained GMMs, so our system could not outperform others. 
-Then we have conducted a 10 scene classification task for 5 algorithms, including ours. 
-
-\\ 
+Then we have conducted a 10 scene classification task for 5 algorithms, including ours. \\ 
 
 This is still a project that has many room for future improvement. 
 Because the scene recognition problem are strongly linked to the real life datas, the quality of training data, and the effectiveness of audible events could all change the performance of such a system. 
@@ -54,5 +52,14 @@ Apart from this kind of event missing, our map contains some events that are not
 Take \textit{leaf} as an example, in our generated map, it appears in \textit{forest}, \textit{office}, and \textit{restaurant}. 
 It is not reasonable for \textit{leaf} to appear in \textit{office} and \textit{restaurant}. 
 This wrong inclusion of some events make our approach more likely to fail. 
-The reason behind our imperfect scene-event map 
+The reason behind our imperfect scene-event map is that the script data for some scene are limited, and the event matching process need to be improved. 
+
+Currently, in our script data corpus, the scene ``concert'' has very limited data both because it is a infrequent scene and also because of the total size of our corpus. 
+Moreover, the event matching process is now carried out on all the paragraphs under a scene. 
+But note that in scripts, most paragraphs are conversations, the exact data source should be some descriptive sentences under a scene.
+So this inclusion of conversation may add some noise to the eventual map we get. 
+
+Third, the accuracy of our event detection need to be further improved. 
+As shown in the chapter of evaluation, we only possess a middle-level performance. 
+The overall performance of our whole system can be further improved if we have a higher event detecter. 
 
