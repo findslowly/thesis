@@ -27,7 +27,7 @@ Then we could get an estimated clean signal spectrum: $\hat{X_i}(k)$.
 \item Applying inverse short time Fourier transform (ISTFT) on $\hat{X_i}(k)$ to get the estimated clean signal $\hat{x}(t)$. 
 \end{enumerate}
 
-A speech processing toolbox for Matlab called VoiceBox is used for spectral subtraction\footnote{http://www.ee.ic.ac.uk/hp/staff/dmb/voicebox/voicebox.html}.
+A speech processing toolbox for Matlab called VoiceBox is used for spectral subtraction\footnote{\url{http://www.ee.ic.ac.uk/hp/staff/dmb/voicebox/voicebox.html}}.
 % noise subtraction example here 
 
 \section{Feature Extraction}
@@ -50,9 +50,18 @@ A popular formula to convert $f$ herts into $m$ mel is:
 \end{equation} 
 
 % melscale.eps on 5566
+\begin{figure}[htb]
+\centering
+\input{figure/eventdetect/melscale}
+\caption{Mel scale versus hertz scale}
+\label{fig:melscale}
+\end{figure}
+
+Figure \ref{fig:melscale} shows the non-linear transformation of hertz scale to mel scale. 
+We could see that the slope of the curve are decreasing as the pitch goes up in hertz scale. 
+Because of this feature of suppressing the higher frequency bands, MFCC enables a focus of the more useful range of bands in lower scale \cite{davis1980comparison}.
 
 % Paraphrase !!!
-Due to the transformation form frequency to mel scale, MFCC focuses on the more important range of lower frequency bands, while suppressing the higher part \cite{davis1980comparison}.
 
 \section{Model Selection}
 From the previous feature extraction process, we could a matrix representation for an audio clip. 
@@ -89,10 +98,11 @@ Before training GMMs for event training data, we first apply K-means algorithm o
 K-means is also an unsupervised clustering method. 
 It uses a Expectation-Maximization step to update the cluster centroid. 
 Because K-means has a faster speed for iterating than GMMs, so we first run K-means and use its centroid result as initials for further iterating of GMMs. 
-This part use the gaussian toolbox provided by Matlab\footnote{http://cn.mathworks.com/help/stats/gmdistribution-class.html} . 
+This part use the gaussian toolbox provided by Matlab\footnote{\url{http://cn.mathworks.com/help/stats/gmdistribution-class.html}} . 
 
 
 \section{Training Data Selection}
+As previously mentioned, the clips in 
 Kullback-Leibler (KL) divergence is a measure of the difference between two probability distributions. More precisely, KL divergence of $Q$ from $P$, denoted by $KL(P||Q)$, is a measure of the information loss when we use $Q$ to approximate $P$.
 
 For continuous random variables $\mathbf{x}$ and two distributions $P$ and $Q$, the KL divergence of $Q$ from $P$ is defined as:

@@ -4,12 +4,12 @@ In this chapter, we introduce the data we used in this project.
 Audio event list is a list of audible events that we labelled manually.  
 In this list, we mainly separate events into four big categories. 
 In each category, we enumerate some common audible events we think is important and distinctive in life. 
-Since we rely on audio data to train events, we download the corresponding audio clips from Sound Search Engines (SSEs). 
-
+The way we created the taxonomy and its structure are introduced in this chapter. 
+Next we review the data we used as the training data for audible events. 
+These data are crawled from the Sound Search Engines (SSEs). 
 Scripts for movie, play, TV series are used for scene-event relation extraction. 
-Because the scripts have often been labelled explicitly in some paragraphs, this information could be used for calculating their relations. 
-We download scripts from various websites and combine them together to extract the scene names. 
-
+Because the scripts have often been labelled explicitly in some paragraphs, this information could be used for identifying the scene names of some paragraphs. 
+We will further use the script data for scene-event relation mining. 
 
 \section{Audible Event List} 
 There are already some research done on the task of building a taxonomy for audio sounds. 
@@ -54,12 +54,19 @@ They include common signals and musical instrument we would likely to hear in li
 
 FIgure \ref{fig:events} shows the architecture of the taxonomy we created in this project. 
 The round cornered rectangle represents a abstract sound event class.  
+In the broad level, there are four classes: \textit{Human, Non-Living, Nature,} and \textit{Other Sound}. 
+Under this first-level categories, there are a more fine-grained second-level sound category. 
+Like in the figure, we have \textit{Movement} and \textit{Non-Movement} under the class of \textit{Human}. 
+For the specific audible sound events, I have listed two example in the figure. 
+In the rectangle box, detailed events that we used for constructing eventlist is listed. 
+The detailed event taxonomy could be viewed online\footnote{\url{http://adapt.seiee.sjtu.edu.cn/~xunxu/asr/events.txt}}. 
+And the full list of 120 audible events can be downloaded here\footnote{\url{http://adapt.seiee.sjtu.edu.cn/~xunxu/asr/eventsList.txt}}.
 
 \section{Audio Data}
 Because in this project, we try to build a detection model for audible events, so we need data to train those events. 
 Hence, we utilize Sound Search Engines (SSEs). 
 The SSE is like search engine for sound clips, and its collection of sound are often crowdsourced from various users. 
-There are many available SSEs for crawling sound clips, e.g., SoundJax\footnote{http://soundjax.com}, FindSounds\footnote{http://findsounds.com}, and Freesound\footnote{http://freesound.org}. 
+There are many available SSEs for crawling sound clips, e.g., SoundJax\footnote{\url{http://soundjax.com}}, FindSounds\footnote{\url{http://findsounds.com}}, and Freesound\footnote{\url{http://freesound.org}}. 
 Some SSEs even have open API for accessing its resources. 
 We use all these SSEs to query the audio events and then download their corresponding clips. 
 
@@ -121,7 +128,7 @@ Clearly, the ``Jimmy's'' is just a posessive term, and ``bedroom'' is the ideal 
 
 To filter out these words that could not form a scene, we use the Stanford CoreNLP \cite{manning2014corenlp}. 
 Stanford CoreNLP integrates many NLP tools, including the part-of-speech (POS) tagger, the named entity recognizer (NER), the dependency parser, etc. 
-It has a online demo here\footnote{http://nlp.stanford.edu:8080/corenlp/process}. 
+It has a online demo here\footnote{\url{http://nlp.stanford.edu:8080/corenlp/process}}. 
 In our case, we would use the following part of Stanford CoreNLP:
  
 First is Named Entity Recognition. The NER could help us to detect the names of things. For example, person and company names, location, and even time information. 
