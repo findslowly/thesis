@@ -4,5 +4,55 @@
 %%==================================================
 
 \chapter{Conclusion and Future Work}
-%\addcontentsline{toc}{chapter}{全文总结}
+Automatic audio scene recognition can benefit a variety of multimedia applications. 
+Especially combined with the mobile devices we usually carry in modern life, we can get multimedia resources anywhere we want. 
+Thus analyzing the environment around anytime we want, or even in the background. 
+The recognized scenes could be used for context decision and may help our mobile devices better function with regard to different environments. 
+Apart from this utility, this technique may be used in the field of large quantity video, audio analysis for surveilliance devices. 
+
+In this thesis, we propose a system for automatically detect audible events from a clip ,
+and then infer the acoustic scenes of that clip from the knowledge we get from mining in movie, play, and TV series script data. 
+
+For the audible events, we construct an audible event taxonomy, which divide audible events into 4 broad classes. 
+And in different classes, the concept of events are further splitted into more fine-grained words. 
+In the end, the node of the tree-like structure are more detailed audible events that we use. 
+We group them into a list of 120 audible events. 
+
+A major difference of our work with past research is we do not classify scenes by models built on the global features of scene sound. 
+We take an indirect way and hope it make a universal solution for audio scene recognition. 
+The approach we propose is to first detect audible events in a clip and infer the scene by detected events. 
+So we first learn Gaussian Mixture Models on the audible event data, and then use the relation we get from scripts to infer scenes. 
+
+The reason that we use scripts as our source for extracting scene-event relation is that scripts generally have a clear boundary of scenes. 
+For example, when moviemakers or play directors are making a show, the scripts they use would explicitly write out under what context some stories are happened. 
+Using these data, we can in essense get the labelled data for a paragraph with the label coming from scene names playwriters have written. 
+However, the paragraph are general text need further process. 
+We match the words in the paragraphs with our audible events, and count occurrence of every events. 
+This occurrence is further used for Term Frequency-Inverse Document Frequency (TFIDF) calculation. 
+The TF-IDF values are then used as the weight of one event to a scene. 
+
+In our experiment, we use the data from IEEE AASP Challenge to evaluate our event detection performance. 
+Comparing with other 6 systems, our event detection model achieves a middle-performing result. 
+Because we use the conventional MFCC features trained GMMs, so our system could not outperform others. 
+Then we have conducted a 10 scene classification task for 5 algorithms, including ours. 
+
+\\ 
+
+This is still a project that has many room for future improvement. 
+Because the scene recognition problem are strongly linked to the real life datas, the quality of training data, and the effectiveness of audible events could all change the performance of such a system. 
+
+First, a important problem is about the ambiguity in sound and events. 
+More specifically, there is the situation that different events have very similar sounds. 
+Like shower, rain, splash and wave, these are all sounds related to water, but they tend to appear in different scenes. 
+The issue here is when we are detecting events in a clip, the system is hard to distinguish between splash and wave, etc. 
+This confusion may make things at a mess when we are infering scenes using the detected events. 
+Hence how to use the information that some events are heard alike, but they may appear in different places is a big issue for this approach. 
+
+Second, the current relation scene-event map get from script data are still not that accurate. 
+Like in the scene \textit{concert}, we do not have the related audible events like \textit{drum}, \textit{violin}, etc. 
+Apart from this kind of event missing, our map contains some events that are not supposed to appear in some scenes. 
+Take \textit{leaf} as an example, in our generated map, it appears in \textit{forest}, \textit{office}, and \textit{restaurant}. 
+It is not reasonable for \textit{leaf} to appear in \textit{office} and \textit{restaurant}. 
+This wrong inclusion of some events make our approach more likely to fail. 
+The reason behind our imperfect scene-event map 
 

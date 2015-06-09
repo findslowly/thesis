@@ -102,8 +102,20 @@ This part use the gaussian toolbox provided by Matlab\footnote{\url{http://cn.ma
 
 
 \section{Training Data Selection}
-As previously mentioned, the clips in 
-Kullback-Leibler (KL) divergence is a measure of the difference between two probability distributions. More precisely, KL divergence of $Q$ from $P$, denoted by $KL(P||Q)$, is a measure of the information loss when we use $Q$ to approximate $P$.
+As previously mentioned, many of the clips in those Sound Search Engines are crowdsourced. 
+Hence, the quality of those clips are not guaranteed to be suitable as our event training data.    
+We need to select out those data which are similar, and discard those outliers. 
+Because outliers are very likely to be a noise, thus adding no knowledge for our event models, perhaps even bring bad effects. 
+
+Therefore, in our project, we added a step for comparing the similarity of the audio clips, and cluster similar clips together, while leaving others clips out. 
+Yet signal data of the audio clips are in different volume, and different duration, it is hard to directly compare their similarity. 
+So we resort to the distance between their corresponding GMMs. 
+??? from here until ???END lines may have been inserted/deleted
+Because the trained GMM are in the same dimension for different audio clips, and GMM represent the overall features, it is reasonable to cluster similar GMMs together. 
+
+In order to measure the distance between GMMs, we use Kullback-Leibler (KL) divergence. 
+KL divergence is a measure of the difference between two probability distributions. 
+More precisely, KL divergence of $Q$ from $P$, denoted by $KL(P||Q)$, is a measure of the information loss when we use $Q$ to approximate $P$.
 
 For continuous random variables $\mathbf{x}$ and two distributions $P$ and $Q$, the KL divergence of $Q$ from $P$ is defined as:
 \begin{equation}
@@ -111,18 +123,34 @@ KL(P||Q) = \int_{-\infty}^{+\infty}\ln(\frac{p(\mathbf{x})}{q(\mathbf{x})})p(\ma
 \label{eq:kl}
 \end{equation}
 where $p(\mathbf{x})$ and $q(\mathbf{x})$ are the density functions of $P$ and $Q$.
+The divergence satisifies three properties: 
+\begin{enumerate}
+\item{Self similarity: $KL(P||P) = 0$}. 
+\item{Self identification: $KL(P||Q) = 0$, only if $P = Q$}. 
+\item{Non-Negativity: $KL(P||Q) >= 0$ for any $P, Q$}. 
+\end{enumerate}
 
-From the above equation, we can find that KL divergence is non-symmetric \ie $KL(P||Q)$ may not equal to $KL(Q||P)$. In practice, sometimes a symmetric measure is needed, thus $\overline{KL}(P||Q)$ is often used, that is:
-\begin{equation}
-\overline{KL}(P||Q) = \overline{KL}(Q||P) = \frac{1}{2}(KL(P||Q) + KL(Q||P)).
-\end{equation}
+Because of these properties, KL divergence is used in many aspects of speech recognition \cite{olsen2003efficient}. 
+But we need to take notice that KL divergence is not a distance because it is not symmetric: $KL(P||Q) \neq KL(Q||P)$. 
+For two gaussian distributions, the KL divergence has a closed formed expression. 
+But for two gaussian mixture models, there is no such closed form expression. 
+To tackle this issue, we use an approximation method to the KL divergence proposed in \cite{hershey2007approximating}
+It uses ``variational approximation'' for calculating KL divergence. 
+We use the \textit{gaussmixk} function in VoiceBox toolbox for implementing the approximated KL divergence\footnote{\url{http://www.ee.ic.ac.uk/hp/staff/dmb/voicebox/doc/voicebox/gaussmixk.html}}. 
 
 \section{Summary}
 The method we propose for audible event detection are introduced in this chapter. 
 We first apply a noise reduction technique on the downloaded audio clips. 
 This audio enhancement process uses Minimum Statistics estimator to estimate the noise power spectral density. 
-Then the estimated noise are subtracted from the input signal to get a cleaned signal for our training. 
-The features we use in this task is MFCC features. 
-They are notable for good capture of audio features. 
-From the extracted MFCC features, we build Gaussian Mixture Models for features of each event. 
-GMM has the capability to model some complex distribution by its components and this helps us for modelling audible events. 
+Then this estimated noise are subtracted from the input signal to get a more cleaned signal for event models trainging. 
+Feature extraction are also reviewed in this chapter.  
+The features we use in this task are MFCC features. 
+They are notable for good capture of audio features because of the non-linear mel scale could suppress higher frequency bands and put more focus on the lower part. 
+From the extracted features, we build Gaussian Mixture Models (GMMs) on them. 
+The reason that GMMs are chosen against other models is that they comprised of multiple gaussian distributions, which are called components. 
+These components could be used to model the underlying sound generating process and help us model more complicated sound events. 
+In the end, we touch on the problem of removing some low-quality sound clips. 
+This removal process is carried out by clustering audio clips. 
+We use an approximation for Kullback-Leibler (KL) divergence to represent the distance between different GMMs, and thus, can also be viewed as the distance between audio clips. 
+Clip features which have similar GMMs are clustered together, and we stop the clustering process when the divergence is large enough. 
+Through this way, we could remove some noisy clips for their feature data is too far away from others. 
