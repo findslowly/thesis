@@ -1,6 +1,7 @@
 \chapter{Evaluation}
 Experiments of the performance of our system is evaluated here. 
 We evaluate our event detection and scene recognition system respectively. 
+For both event and scene evaluation, we have a evaluation on self model tuning, and another evaluation for system comparison. 
 
 \section{Event Detection Evaluation}
 \subsection{Evaluation Data and Metric}
@@ -28,17 +29,11 @@ The onset-only and onset-offset evaluation are averaged as event-based metric.
 Class-wise event-based calculate $r$, $e$, and $c$ for each class separately. And then it is averaged over classes. 
 Finally, the F-measure for these three metric are averaged as the final metric of a system, and we will compare this metric with other systems. 
 
-\subsection{Evaluation Process}
-The evaluation takes on two parts: self tuning and system comparison. 
+\subsection{Evaluation Result}
 
+\subsubsection{Self Tuning}
 Audio events are detected using the previous proposed GMM method, but there are still some parameters or configuration to be tuned for the best performance of our model.
 Most importantly, the number of component number in GMM are ser by human, we run a evaluation for different component numbers from 4 to 45 to see how the number affects the F-measure. 
-
-In system comparison, we use other models from the aforementioned IEEE AASP Challenge\footnote{http://c4dm.eecs.qmul.ac.uk/sceneseventschallenge/resultsOL.html}. 
-In the submitted papers, contestents also carried out the same evaluation on the developement dataset, so the comparison are done on the same dataset.  
-
-\subsection{Evaluation Result}
-\subsubsection{Component Number Evaluation}
 Figure \ref{fig:component} is the result of average F-measure with regard to different component numbers in GMM. 
 % component.eps
 \begin{figure}[htb!]
@@ -62,7 +57,9 @@ Moreover, Figure \ref{fig:componentTime} is the running time of our system with 
 There is basically a linear relationship between the number of components and the total running time. 
 Hence, we choose to use 18 as the component number for our system, since this component number has a good F-measure, and the speed for training models are also fast.
 
-\subsubsection{Event Detection F-measure Evaluation}
+\subsubsection{System Comparison}
+In system comparison, we use other models from the aforementioned IEEE AASP Challenge\footnote{http://c4dm.eecs.qmul.ac.uk/sceneseventschallenge/resultsOL.html}. 
+In the submitted papers, contestents also carried out the same evaluation on the developement dataset, so the comparison are done on the same dataset.  
 \begin{table}[htb]
 \centering
 \caption{Event Detetion Evaluation}
@@ -89,7 +86,9 @@ There are seven systems in the online challenge, but the system "SCS" does not l
 \end{figure}
 As we could see visually in Figure \ref{fig:eventdetectF1}, our event detection system have a accuracy close to the highest-performing system. 
 
+
 \section{Scene Recognition Evaluation}
+
 \subsection{Evaluation Data}
 After we have done event detection, we use the previous proposed scene inference method to do scene recognition. 
 In this section, a 10-scenes evaluation experiment are carried out for evaluating our system's performance.
@@ -122,6 +121,53 @@ Table \ref{table:systems} shows a summary of the systems used for comparison and
 \end{table}
 
 \subsection{Evaluation Result}
+
+\subsubsection{Self Tuning}
+In the self tuning part of our scene recognition system. 
+We conducted a evaluation on how noise reduction can affect the scene recognition accuracy. 
+In the training process, the clips could be denoised before training GMMs, and the same reason applies to the testing process. 
+So here are two factors that affect the event detection result: whether training data are denoised, and whether testing data are denoised. 
+We denote the model name for these different condition in the format of \textit{out\_trainDenoise\_testDenoise}. 
+The last two variable would be represented by $0$ and $1$. 
+For example, \textit{our\_1\_1} represent the model which has the training data and testing data denoised.  
+
+\begin{table}[htb!]
+\centering
+\resizebox{\textwidth}{!}{
+\begin{tabular}{lccccccccccc}
+\toprule
+     & bathroom & beach & concert & forest & kitchen & office & park & restaurant & street & subway station & Average \\
+\bottomrule
+our\_0\_0 & $70\%$ & $20\%$ & $30\%$ & $60\%$ & $50\%$ & $70\%$ & $10\%$ & $0\%$  & $90\%$ & $0\%$  & $40\%$\\
+our\_0\_1 & $60\%$ & $60\%$ & $50\%$ & $50\%$ & $50\%$ & $70\%$ & $50\%$ & $0\%$  & $60\%$ & $0\%$  & $45\%$\\
+our\_1\_0 & $60\%$ & $0\%$  & $40\%$ & $20\%$ & $40\%$ & $80\%$ & $10\%$ & $0\%$  & $90\%$ & $0\%$  & $34\%$\\
+our\_1\_1 & $80\%$ & $60\%$ & $60\%$ & $50\%$ & $60\%$ & $80\%$ & $40\%$ & $10\%$ & $100\%$& $30\%$ & $57\%$\\
+\bottomrule
+\end{tabular}
+}
+\caption{Recognition accuracy for our different models}
+\label{table:ourTuning}
+\end{table}
+
+Table \ref{table:ourTuning} shows the detailed result of this experiment. 
+As expected, for different training process, denoising the testing data always bring an improvement in accuracy. 
+Moreover, denoising the training further boost the result. 
+
+\begin{figure}[htb!]
+\centering
+\input{figure/evaluation/ourTuning}
+\caption{Recognition accuracy for our different models}
+\label{fig:ourTuning}
+\end{figure}
+
+Figure \ref{fig:ourTuning} is a graphical present of the data in Table \ref{table:ourTuning}. 
+In the x-axis label, ``Train on denoised'' means that we are training on denoised data, and the other are trained on undenoised data. 
+For one group, there is two bar representing given that training condition, two testing experiments are done. 
+The blue bar is the result of testing on undenoised data, and the brown bar is the result of testing on denoised data. 
+It is clearly shown in the figure that denoising testing data always improves the accuracy. 
+Our highest performance is achieved at $57\%$ when we train our model on denoised data and also test on denoised data. 
+
+\subsubsection{System Comparison}
 Table \ref{table:ac} show the recognition accuracy for each audio scenes. 
 As we could see in this table, GSR has a highest average accuracy of $61\%$, while our model comes second with accuracy of $54\%$. 
 However, the variation in our recognition result is very large. 
@@ -133,7 +179,7 @@ But in scene like \textit{restaurant}, it is generally filled with noise atmosph
 
 \begin{table}[htb!]
 \centering
-\resizebox{0.95\textwidth}{!}{
+\resizebox{\textwidth}{!}{
 \begin{tabular}{lccccccccccc}
 \toprule
      & bathroom & beach & concert & forest & kitchen & office & park & restaurant & street & subway station & Average \\
@@ -142,7 +188,7 @@ Baseline & $60\%$ & $40\%$ & $60\%$ & $40\%$ & $10\%$ & $40\%$ & \textbf{$60\%$}
 RNH1 & $30\%$ & $40\%$ & $70\%$ & $40\%$ & $20\%$ & $30\%$ & $50\%$ & $50\%$ & $70\%$ & $50\%$ & $45\%$ \\
 RNH2 & $20\%$ & $40\%$ & $70\%$ & $40\%$ & $40\%$ & $30\%$ & $50\%$ & $40\%$ & $70\%$ & $60\%$ & $46\%$ \\
 GSR & $60\%$ & $50\%$ & \textbf{$90\%$} & \textbf{$50\%$} & $30\%$ & $60\%$ & \textbf{$60\%$} & \textbf{$60\%$} & $70\%$ &\textbf{ $80\%$} & \textbf{$61\%$} \\
-Our & \textbf{$80\%$} & \textbf{$60\%$} & $60\%$ & $40\%$ & \textbf{$50\%$} & \textbf{$100\%$} & $30\%$ & $0\%$ & \textbf{$100\%$} & $20\%$ & $54\%$ \\
+Our & \textbf{$80\%$} & \textbf{$60\%$} & $60\%$ & \textbf{$50\%$} & \textbf{$60\%$} & \textbf{$80\%$} & $40\%$ & $10\%$ & \textbf{$100\%$} & $30\%$ & $57\%$ \\
 \bottomrule
 \end{tabular}
 }
@@ -150,18 +196,38 @@ Our & \textbf{$80\%$} & \textbf{$60\%$} & $60\%$ & $40\%$ & \textbf{$50\%$} & \t
 \label{table:ac}
 \end{table}
 
-\begin{figure}[htb]
+In the table \ref{table:ac}, we could see that GSR has the highest average accuracy which reaches to $61\%$. 
+And our system ranked the second with $57\%$. 
+Yet, our system has the highest accuracy in 6 different scenes, and even reaches a perfect accuracy in scene \textit{street}. 
+
+Looking closely on the data, we could find that our system performs bad in \textit{restaurant} and \textit{subway station}, only $10\%$ and $30\%$ respectively. 
+We think that this is because the testing data of these two scenes are generally noisy. 
+Our system work in a way to detect audible events our an audio clip. 
+But when the clip is noisy, it is hard for our system to detect any audible events embedded in it, which is the case in \textit{restaurant} and \textit{subway station}. 
+
+\begin{figure}[htb!]
 \centering
 \input{figure/evaluation/sceneeval}
 \caption{Recognition accuracy for 10 audio scenes}
 \label{fig:sceneeval}
 \end{figure}
 
+
 \section{Summary}
 In this chapter, we introduced the evaluation of our systems. 
 It include two parts: first the event detection evaluation and then the scene recognition evaluation.
-In the first evaluation, we compare our model with submitted systems to the IEEE AASP Challenge. 
-Our system has a average F-measure of 0.4864, which come close to the highest one: 0.5023. 
-In the scene recognition evaluation, we conduct a 10 scene classification with other 4 algorithms. 
-We achieved second in the average accuracy. 
-But it is notable that we have five scene accuracies which is ranked the first.  
+
+In the first evaluation, we compare our model with submitted systems to the IEEE AASP Challenge for event detection. 
+This evaluation uses 16 audible events, and each event has 20 clips for training. 
+The testing datas are three long audio, where each may contain 10 to 20 events. 
+The task is to build a model trained on training data and detect out the events in the testing data, where the onset and offset time are also required. 
+Our system build GMMs on MFCC features, and segment the testing clips with a dynamic segmentor. 
+In the evaluation, we has a average F-measure of 0.4864, which come close to the highest one: 0.5023. 
+
+In the scene recognition evaluation, we first conduct an experiment on how noise reduction affects the performance of our system. 
+The result is that noise reduction would boost the performance, and we have the highest accuracy when both training data and testing data are denoised. 
+So, we use this mechanism in the following evaluation. 
+In the system comparison part, we compare the performance of our system with other 4 algorithms in a 10 scene classification problem. 
+The 10 scene are chosen to be the common audio scene seen in everyday life. 
+The result is that we achieved second in the average accuracy. 
+But it is notable that we have six scenes with accuracies ranked the first.  

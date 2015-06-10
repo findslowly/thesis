@@ -94,11 +94,11 @@ An audio event is naturally more complicated than speech, and may therefore cont
 Therefore, we use different gaussian densities with different $\mathbf{\mu}$ and $\mathbf\sigma$, where the $\mathbf\mu$ may capture the overall value for one class and the $\mathbf\sigma$ shows the variation of that class.  
 When these densities are added together, forming a GMM, they can have a good depiction of some unusual distributions. 
 
-Before training GMMs for event training data, we first apply K-means algorithm on the data. 
-K-means is also an unsupervised clustering method. 
-It uses a Expectation-Maximization step to update the cluster centroid. 
-Because K-means has a faster speed for iterating than GMMs, so we first run K-means and use its centroid result as initials for further iterating of GMMs. 
-This part use the gaussian toolbox provided by Matlab\footnote{\url{http://cn.mathworks.com/help/stats/gmdistribution-class.html}} . 
+%Before training GMMs for event training data, we first apply K-means algorithm on the data. 
+%K-means is also an unsupervised clustering method. 
+%It uses a Expectation-Maximization step to update the cluster centroid. 
+%Because K-means has a faster speed for iterating than GMMs, so we first run K-means and use its centroid result as initials for further iterating of GMMs. 
+%This part use the gaussian toolbox provided by Matlab\footnote{\url{http://cn.mathworks.com/help/stats/gmdistribution-class.html}} . 
 
 
 \section{Training Data Selection}
@@ -110,7 +110,6 @@ Because outliers are very likely to be a noise, thus adding no knowledge for our
 Therefore, in our project, we added a step for comparing the similarity of the audio clips, and cluster similar clips together, while leaving others clips out. 
 Yet signal data of the audio clips are in different volume, and different duration, it is hard to directly compare their similarity. 
 So we resort to the distance between their corresponding GMMs. 
-??? from here until ???END lines may have been inserted/deleted
 Because the trained GMM are in the same dimension for different audio clips, and GMM represent the overall features, it is reasonable to cluster similar GMMs together. 
 
 In order to measure the distance between GMMs, we use Kullback-Leibler (KL) divergence. 

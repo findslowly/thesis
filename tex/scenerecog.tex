@@ -5,6 +5,18 @@ Then a segmenter algorithm is used to segment audio data for event detection.
 In the last, the detected event sequence is used for scene recognition. 
 
 \section{Scene-Event Relation Mining}
+\subsection{Event Expanding}
+In the eventlist we created, the events are all in their original form. 
+However, in the movie, play or TV series data, the words are used to describe real world events. 
+They inevitably have different forms, like plural of nouns, and various tenses for verbs. 
+In order to match these diverse cases, we expand the words in our eventlist to their possible forms to accomdate the reality. 
+
+The idea of event expanding is that we find the plural forms for nouns, and find different verb tenses. 
+Then if we are going to match for some events, we not only match its original form, but also other forms. 
+We use the Nodebox English Linguistics library\footnote{https://www.nodebox.net/code/index.php/Linguistics} to complete this expanding task. 
+It provides some convinient tools for nouns pluralization and verb conjugation, i.e., create derived forms of a verb from its principal form. 
+
+\subsection{TF-IDF Calculation}
 As mentioned before, the goal of our project is to build a relation between audio scenes and audible events and then infer scenes by this relation.  
 We have already introduced the data we are going to use: scripts for movie, play, TV series, etc. 
 In the chapter of data preparation, we have splitted out the small contexts in scripts. 
@@ -43,6 +55,39 @@ After these two values are calculated, the TF-IDF value are therefore get by mul
  \text{TF-IDF} = TF \times IDF 
 \end{equation}
 
+In the evaluation part, we would perform an experiment on 10 scene classification problem. 
+The 10 audio scenes are: \textit{bathroom, beach, concert, forest, kitchen, office, park, restaurant, street}, and \textit{subway station}. 
+Table \ref{table:exampleMap} shows the top 10 events ranked by TF-IDF scores for these 10 scenes. 
+Note that in scene ``concert'', there is only 7 events listed there due to the limited data on this scene. 
+This scene-event map with their TF-IDF scores could be viewed online\footnote{\url{http://adapt.seiee.sjtu.edu.cn/~xunxu/asr/map.txt}}. 
+
+\begin{table}[htb!]
+\centering
+\resizebox{\textwidth}{!}{
+\begin{tabular}{ll}
+\toprule
+Scene     & Top 10 events ranked by TF-IDf\\
+\bottomrule
+bathroom & running+water, toilet, faucet, toothbrush, shower, drawer, drain, talk, paper, bowl \\ 
+beach & seagull, sand, boat, talk, wave, sea, car, laughter, drink, wood, running \\ 
+concert & piano, applause, crowd, chorus, child, cry, talk \\ 
+forest & tree, wood, dirt, talk, running, bird, river, car, leaf, grass, wind\\ 
+kitchen & drawer, cutlery, microwave, dish, kettle, talk, bowl, phone, toaster, running+water\\ 
+office & desk, drawer, page+turn, talk, phone, printer, paper, chair, leaf, typewriter\\
+park & talk, car, tree, laughter, dog, child, grass, crowd, running, phone\\ 
+restaurant & talk, drink, laughter, phone, car, leaf, paper, dish, ring, chair, write \\ 
+street & car, truck, subway, talk, traffic, engine, siren, phone, running, laughter \\ 
+subway station & subway, train, car, tube, talk, pace, crowd, metal, phone, vehicle \\ 
+\bottomrule
+\end{tabular}
+}
+\caption{An example of scene-event map}
+\label{table:exampleMap}
+\end{table}
+
+% concert don't have much contexts
+
+
 \section{Audio Segmentation}
 Once the models are built, we are ready to use it to test on a potential event clip. 
 But for the problem of scene recogniton, the testing data are a clip which may contain multiple events. 
@@ -71,8 +116,25 @@ So a higher spectral centroid denotes a higher frequency in this frame. Because 
 \end{itemize}
 
 After these two features are calculated for every frames, they are further smoothed and averaged to get a threshold. 
-The final segmentation is conducted 
-!!!  or | 
+
+% A segmentation example 
+\begin{figure}[htb]
+\centering
+\includegraphics[scale=0.8]{figure/scenerecog/segment}
+\caption{A segmentation example}
+\label{fig:segment}
+\end{figure}
+
+Figure \ref{fig:segment} is a example of segmenting an audio clips using the segmenter. 
+The original audio is recorded in a concert containing two audible events, the first half part represents the sound of applausing, and the latter half part represents the sound of instrument tuning. 
+In this figure, subfigure (a) and (b) are audio features of short time energy and spectral centroid respectively.  
+In these two subfigures, the green line is the original feature data, and the cyan line is the filtered verson of feature data. 
+In the segmenter, median filter\footnote{\url{http://cn.mathworks.com/help/signal/ref/medfilt1.html}} is applied in the feature sequence using 5 windows, each window is a frame of 50 milliseconds. 
+After filtering, we could see that first the short time energy for \textit{instrument tuning} is very low, nearly reaching the threshold (represented by the thick black line). 
+At the same time, \textit{instrument tuning} has a relative higher spectral centroid with regard to the threshold in spectral centroid. 
+For the \textit{applause} sound, the two features for it are both above the corresponding threshold.  
+In the end, we could see in subfigure (c), there is two segments highlighted by a dard red area. 
+These two segments are cut out for event detection. 
 
 \section{Scene Inference}
 Once a event sequence is detected, we use that sequence of events to infer the scene we think it's the most likely one. 

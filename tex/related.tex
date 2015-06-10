@@ -55,6 +55,9 @@ In this high-performing system, Schr\"{o}der \et \cite{schroder2013acoustic} pro
 
 \section{Audio Scene Detection}
 In the area of audio scene recognition, most of the proposed scene recognition systems are directly modeling global acoustic features of the audio scene. 
+
+First, for the features MFCC features, there is some research done on comparing different features. 
+MFCC, which is a filter-bank based feature outperforms Linear Predictive Coding (LPC) or Linear Predictive Cepstrum Coefficients (LPCC) \cite{levy2003comparison}. 
 Ma \et \cite{ma2006acoustic} proposed a HMM-based acoustic context classifier, which trained on data from 11 acoustic scenes in everyday life. 
 The features they used are traditional MFCCs with velocity and acceleration, which resulted in a 39 dimension features. 
 
@@ -70,14 +73,16 @@ Then they used a K-Nearest-Neighbor (KNN) to function as a classifier.
 In their experiment, their total accuracy rate is over 96$\%$. 
 Yet for their work, the audio classes considered is really limited, and not suitable for real life audio scene classification problem.  
 
-% paraphrase!
 Giannoulis \et \cite{giannoulis2013applications} described the on acoustic scene classification and sound events detection.  
-In the scene classification part, there are 10 different scenes to classify. 
-Roma \et \cite{romarecurrence} use Recurrence Quantificaton Analysis (RQA) and MFCC features outperforming other systems when using a standard SVM classifer. 
+In the scene classification part, there are 10 different scenes to classify, and their data are recorded by the organizer. 
+Among, all those competing systems, Roma \et \cite{romarecurrence} proposed system outperforms other systems. 
+They use a standard SVM classifer for MFCC features combining Recurrence Quantification Analysis (RQA). 
 
 One of the approaches to consider audio events in scene recognition is introduced by Cai \et \cite{cai2006flexible}. 
+They have a intuition similar to ours. 
 They proposed a flexible framework to recognize 5 audio context using 10 predifined events. 
-The main models they used are HMM, Grammar Network, and Bayesian Network. 
+The main models they used are HMM, Grammar Network, and Bayesian Network, in which they model the audio effects and using the bayesian network to perform scene inference. 
 Another event-based audio context recognition is proposed by Heittola \et \cite{heittola2010audio}. 
-They build histograms for each scene with a set of predifined audio events, and calcuate the cosine distance of the histograms with a new histogram of detected events.\\
+They build histograms for each scene with a set of predifined audio events, and calcuate the cosine distance of the histograms with a new histogram of detected events.
+The limits of their work is that they confine their application to a small set of audio scenes using manually labelled training data. 
 
