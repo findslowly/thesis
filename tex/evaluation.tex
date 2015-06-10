@@ -196,15 +196,6 @@ Our & \textbf{$80\%$} & \textbf{$60\%$} & $60\%$ & \textbf{$50\%$} & \textbf{$60
 \label{table:ac}
 \end{table}
 
-In the table \ref{table:ac}, we could see that GSR has the highest average accuracy which reaches to $61\%$. 
-And our system ranked the second with $57\%$. 
-Yet, our system has the highest accuracy in 6 different scenes, and even reaches a perfect accuracy in scene \textit{street}. 
-
-Looking closely on the data, we could find that our system performs bad in \textit{restaurant} and \textit{subway station}, only $10\%$ and $30\%$ respectively. 
-We think that this is because the testing data of these two scenes are generally noisy. 
-Our system work in a way to detect audible events our an audio clip. 
-But when the clip is noisy, it is hard for our system to detect any audible events embedded in it, which is the case in \textit{restaurant} and \textit{subway station}. 
-
 \begin{figure}[htb!]
 \centering
 \input{figure/evaluation/sceneeval}
@@ -212,7 +203,24 @@ But when the clip is noisy, it is hard for our system to detect any audible even
 \label{fig:sceneeval}
 \end{figure}
 
+In the table \ref{table:ac}, we could see that GSR has the highest average accuracy which reaches to $61\%$. 
+And our system ranked the second with $57\%$. 
+Yet, our system has the highest accuracy in 6 different scenes, and even reaches a perfect accuracy in scene \textit{street}. 
 
+\begin{figure}[htb!]
+\centering
+\input{figure/evaluation/ourgsr}
+\caption{Comparison of Our's with GSR}
+\label{fig:ourgsr}
+\end{figure}
+
+Looking closely at the Figure \ref{fig:ourgsr}, we could find that our system performs bad in \textit{restaurant} and \textit{subway station}, only $10\%$ and $30\%$ respectively. 
+We think that this is because the testing data of these two scenes are generally noisy. 
+Our system work in a way to detect audible events our an audio clip. 
+But when the clip is noisy, it is hard for our system to detect any audible events embedded in it, which is the case in \textit{restaurant} and \textit{subway station}. 
+
+
+\cleardoublepage{}
 \section{Summary}
 In this chapter, we introduced the evaluation of our systems. 
 It include two parts: first the event detection evaluation and then the scene recognition evaluation.
